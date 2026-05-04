@@ -1,0 +1,40 @@
+{
+  "name": "banextv",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/material": "^7.3.10",
+    "@mui/material-nextjs": "^7.3.9",
+    "bcryptjs": "^3.0.3",
+    "jose": "^6.2.2",
+    "jsonwebtoken": "^9.0.3",
+    "jspdf": "^4.2.1",
+    "next": "16.2.2",
+    "pg": "^8.11.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^20.17.57",
+    "@types/pg": "^8.11.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "babel-plugin-react-compiler": "1.0.0",
+    "tailwindcss": "^4",
+    "typescript": "^5.8.3"
+  }
+}
