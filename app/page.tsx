@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Logo from "@/public/gmpl-logo/gmpl-360-Logo.png";
+import Logo from "@/public/gmpl-logo/gmpl-360-logo.svg";
 
 const features = [
   {
@@ -1156,7 +1156,7 @@ export default function HomePage() {
           <footer className="footer">
             <div className="footer-card glass">
               <div className="footer-brand">
-                Track<span>Force</span>
+        <Image src={Logo} alt="TrackForce Logo" width={250} height={50} />
               </div>
               <div className="footer-copy">© {new Date().getFullYear()} Global Marks Pvt Ltd — All rights reserved</div>
               <div className="footer-right">Powered by GMPL Field Ops</div>

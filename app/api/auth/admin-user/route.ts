@@ -221,7 +221,7 @@ export async function POST(request: NextRequest) {
     if (action === 'add_store') {
       if (!body.store_name) return NextResponse.json({ message: 'Store name is required' }, { status: 400 })
       await query(`INSERT INTO stores (store_name, city_id, latitude, longitude, address) VALUES ($1,$2,$3,$4,$5)`,
-        [body.store_name, body.city_id || 1, body.latitude || null, body.longitude || null, body.address || null])
+        [body.store_name, body.city_id, body.latitude|| null, body.longitude || null, body.address || null])
       return NextResponse.json({ success: true, message: 'Store added' })
     }
 

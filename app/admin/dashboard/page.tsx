@@ -407,7 +407,7 @@ export default function AdminDashboard() {
       try {
         const lat = (showModal.latitude as string) || "";
         const lng = (showModal.longitude as string) || "";
-        const res = await fetch("/api/auth/admin-user", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"add_store", store_name:name, latitude: lat ? parseFloat(lat) : null, longitude: lng ? parseFloat(lng) : null, address:(showModal.address as string)||"" }) });
+       const res = await fetch("/api/auth/admin-user", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"add_store", store_name:name, city_id: showModal.city_id ? parseInt(String(showModal.city_id)) : null, latitude: lat ? parseFloat(lat) : null, longitude: lng ? parseFloat(lng) : null, address:(showModal.address as string)||"" }) });
         const data = await res.json();
         if (res.ok) { showToast("Store added!"); setShowModal(null); fetchAll(); }
         else showToast(data.message || "Error", true);
@@ -1036,7 +1036,7 @@ export default function AdminDashboard() {
               <>
                 <div className="top-header-row" style={{marginBottom:12}}>
                   <div className="section-title" style={{marginBottom:0}}>Store Locations</div>
-                  <button className="btn bp" onClick={()=>setShowModal({type:"store",mode:"add"})}>+ Add Store</button>
+                  <button className="btn bp" onClick={()=>setShowModal({type:"store",mode:"add",city_id:cities[0]?.city_id||""})}>+ Add Store</button>
                 </div>
                 <div className="card">
                   <div className="ch"><div className="ct">Store GPS Coordinates</div><div style={{fontSize:11,color:"#64748B"}}>Used for geofence check-in validation (200m radius)</div></div>
@@ -1282,7 +1282,7 @@ export default function AdminDashboard() {
                 <div className="fg" style={{gridColumn:"span 2"}}><label>Address</label><input style={inp} placeholder="Street, Area, City" value={String(showModal.address||"")} onChange={e=>setShowModal(p=>p?{...p,address:e.target.value}:p)}/></div>
                 <div className="fg"><label>Latitude</label><input style={inp} type="number" step="0.000001" placeholder="33.566678" value={String(showModal.latitude||"")} onChange={e=>setShowModal(p=>p?{...p,latitude:e.target.value}:p)}/></div>
                 <div className="fg"><label>Longitude</label><input style={inp} type="number" step="0.000001" placeholder="73.155161" value={String(showModal.longitude||"")} onChange={e=>setShowModal(p=>p?{...p,longitude:e.target.value}:p)}/></div>
-                <div className="fg"><label>City</label><select style={s} value={String(showModal.city_id||"1")} onChange={e=>setShowModal(p=>p?{...p,city_id:e.target.value}:p)}>{cities.map(c=><option key={`c-${c.city_id}`} value={c.city_id}>{c.city_name}</option>)}</select></div>
+                <div className="fg"><label>City</label><select style={s} value={String(showModal.city_id||"")} onChange={e=>setShowModal(p=>p?{...p,city_id:e.target.value}:p)}><option value="">Select City</option>{cities.map(c=><option key={`c-${c.city_id}`} value={c.city_id}>{c.city_name}</option>)}</select></div>
               </div>
               <div className="modal-footer">
                 <button className="btn bgray" onClick={()=>setShowModal(null)}>Cancel</button>

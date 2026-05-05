@@ -1352,7 +1352,7 @@ export default function BADashboard() {
         {/* TOP BAR */}
         <div className="topbar">
           <div className="logo">
-            <div className="logo-icon">GM</div>
+   z
             <div>
               <div className="logo-name">GMPL Field Operations</div>
               <div className="logo-sub">Brand Ambassador Portal</div>

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Logo from "@/public/gmpl-logo/gmpl-360-logo.svg";
 import Link from "next/link";
 
 const ROLES = [
@@ -349,14 +351,15 @@ export default function LoginPage() {
 
             {/* Brand */}
             <div className="brand-row">
-              <div className="brand-icon">
+              {/* <div className="brand-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5">
                   <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
                 </svg>
-              </div>
+              </div> */}
               <div>
-                <div className="brand-name">GLOBAL MARKS</div>
-                <div className="brand-sub">PVT. LTD.</div>
+                   <Image src={Logo} alt="TrackForce Logo" width={250} height={50} />
+                {/* <div className="brand-name">GLOBAL MARKS</div>
+                <div className="brand-sub">PVT. LTD.</div> */}
               </div>
             </div>
 
