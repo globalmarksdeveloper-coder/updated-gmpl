@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Logo from "@/public/gmpl-logo/gmpl-third-logo.png";
+import Logo from "@/public/gmpl-logo/gmpl-360-Logo.png";
 
 const features = [
   {
