@@ -445,7 +445,7 @@ export default function AdminDashboard() {
       e.full_name?.toLowerCase().includes(empSearch.toLowerCase()) || 
       e.email?.toLowerCase().includes(empSearch.toLowerCase()) || 
       e.employee_code?.toLowerCase().includes(empSearch.toLowerCase()) ||
-      e.cnic?.includes(empSearch.replace(/[-\s]/g, "")) ||
+e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
       e.phone?.includes(empSearch.replace(/[\s-]/g, ""));
     return matchRole && matchSearch;
   });
