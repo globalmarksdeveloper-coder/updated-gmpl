@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import Logo from "@/public/gmpl-logo/gmpl-third-logo.png";
 
 const features = [
   {
@@ -92,13 +94,15 @@ export default function HomePage() {
 
         :root {
           --bg: #060816;
-          --panel: rgba(14, 23, 48, 0.72);
+          --panel: rgba(255, 255, 255, 0.02);
+
           --panel-2: rgba(255, 255, 255, 0.06);
           --line: rgba(255,255,255,0.1);
           --text: #ecf3ff;
+          --text-2: #5ec1ff;
           --muted: #9fb0d0;
-          --blue: #4f8cff;
-          --blue-2: #6ecbff;
+          --blue: #0D4066;
+          --blue-2: #1571AE;
           --glow: rgba(79, 140, 255, 0.32);
           --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
           --radius: 24px;
@@ -211,7 +215,7 @@ export default function HomePage() {
         .glass {
           background: var(--panel);
           border: 1px solid var(--line);
-          backdrop-filter: blur(18px);
+          backdrop-filter: blur(22px);
           -webkit-backdrop-filter: blur(18px);
           box-shadow: var(--shadow);
         }
@@ -526,7 +530,7 @@ export default function HomePage() {
         }
 
         .mini-card-label {
-          color: #9fb0d0;
+          color: #5ec1ff;
           font-size: 0.78rem;
           margin-bottom: 8px;
           letter-spacing: 0.06em;
@@ -949,13 +953,15 @@ export default function HomePage() {
 
         <div className="container nav-wrap">
           <nav className="nav glass">
-            <Link href="/" className="nav-logo">
-              <div className="nav-logo-icon">TF</div>
+            {/* <Link href="/" className="nav-logo"> */}
+                     <Link href="/">
+
+              <Image src={Logo} alt="TrackForce Logo" width={250} height={50} />
               <div>
-                <div className="nav-logo-name">
+                {/* <div className="nav-logo-name">
                   Track<span>Force</span>
-                </div>
-                <div className="nav-logo-sub">Field Operations Platform</div>
+                </div> */}
+                {/* <div className="nav-logo-sub">Field Operations Platform</div> */}
               </div>
             </Link>
 

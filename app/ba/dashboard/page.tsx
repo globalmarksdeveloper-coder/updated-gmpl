@@ -1378,15 +1378,15 @@ export default function BADashboard() {
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:20 }}>
             {/* Card 1: TD / MTD */}
             <div className="scard">
-              <div className="scard-label">TD / MTD Sales</div>
+              <div className="scard-label">Sales</div>
               <div style={{ display:"flex", alignItems:"center", gap:14, marginTop:6 }}>
                 <div>
-                  <div style={{ fontSize:9, color:"#94A3B8", fontWeight:600, marginBottom:2 }}>TD</div>
+                  <div style={{ fontSize:9, color:"#94A3B8", fontWeight:600, marginBottom:2 }}>Today Sale</div>
                   <div style={{ fontFamily:"Poppins,sans-serif", fontSize:18, fontWeight:800, color:"#1E3A8A" }}>Rs {totalSales.toLocaleString()}</div>
                 </div>
                 <div style={{ width:1, height:32, background:"#E2E8F0" }}/>
                 <div>
-                  <div style={{ fontSize:9, color:"#94A3B8", fontWeight:600, marginBottom:2 }}>MTD</div>
+                  <div style={{ fontSize:9, color:"#94A3B8", fontWeight:600, marginBottom:2 }}>Month to Date</div>
                   <div style={{ fontFamily:"Poppins,sans-serif", fontSize:18, fontWeight:800, color:"#10B981" }}>Rs {totalSales.toLocaleString()}</div>
                 </div>
               </div>
