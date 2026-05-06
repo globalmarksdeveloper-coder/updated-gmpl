@@ -97,7 +97,7 @@ function EmployeeDetailModal({
             <div style={{display:"flex",gap:14,marginTop:8,flexWrap:"wrap"}}>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>Total Sales</div><div style={{fontSize:15,fontWeight:800,color:"#10B981"}}>Rs {grandTotal.toLocaleString()}</div></div>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>Days Present</div><div style={{fontSize:15,fontWeight:800,color:"#60A5FA"}}>{daysPresent}</div></div>
-              <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>TSC</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.tsc_name||"—"}</div></div>
+              <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>TSC</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.tse_name||"—"}</div></div>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>AM</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.am_name||"—"}</div></div>
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
   const [saleBrand, setSaleBrand] = useState<string>("all");
   const [saleSearch, setSaleSearch] = useState<string>("");
   const [priceBrand, setPriceBrand] = useState<string>("all");
-  const [topPerformers, setTopPerformers] = useState<{topBAs:Record<string,any>[],topTSCs:Record<string,any>[],topAMs:Record<string,any>[]}>({topBAs:[],topTSCs:[],topAMs:[]});
+  const [topPerformers, setTopPerformers] = useState<{topBAs:Record<string,any>[],topTSEs:Record<string,any>[],topAMs:Record<string,any>[]}>({topBAs:[],topTSEs:[],topAMs:[]});
   const [topPeriod, setTopPeriod] = useState<string>("month");
   const [selectedPerformer, setSelectedPerformer] = useState<Record<string,any>|null>(null);
   const [priceSearch, setPriceSearch] = useState<string>("");
@@ -302,7 +302,7 @@ export default function AdminDashboard() {
   const fetchTopPerformers = async (period: string = "month") => {
     try {
       const d = await fetch(`/api/auth/topperformers?period=${period}&limit=10`).then(r=>r.json());
-      setTopPerformers({ topBAs: d.topBAs||[], topTSCs: d.topTSCs||[], topAMs: d.topAMs||[] });
+setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAMs||[] });
     } catch (_e: unknown) {}
   };
 
@@ -436,16 +436,16 @@ export default function AdminDashboard() {
   const inp = {padding:"8px 12px",border:"1.5px solid #E2E8F0",borderRadius:8,fontSize:13,outline:"none",width:"100%"};
 
   const baList  = employees.filter(e=>e.role_name==="Brand Ambassador");
-  const tscList = employees.filter(e=>e.role_name==="TSC");
+  const tseList = employees.filter(e=>e.role_name==="TSE/TSO");
   const amList  = employees.filter(e=>e.role_name==="Area Manager");
 
   const filteredEmps = employees.filter(e=>{
-    const matchRole = empRoleFilter==="all" || e.role_name===(empRoleFilter==="BA"?"Brand Ambassador":empRoleFilter==="TSC"?"TSC":empRoleFilter==="AM"?"Area Manager":"Admin");
+    const matchRole = empRoleFilter==="all" || e.role_name===(empRoleFilter==="BA"?"Brand Ambassador":empRoleFilter==="TSE"?"TSE/TSO":empRoleFilter==="AM"?"Area Manager":"Admin");
     const matchSearch = !empSearch || 
       e.full_name?.toLowerCase().includes(empSearch.toLowerCase()) || 
       e.email?.toLowerCase().includes(empSearch.toLowerCase()) || 
       e.employee_code?.toLowerCase().includes(empSearch.toLowerCase()) ||
-e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
+      e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
       e.phone?.includes(empSearch.replace(/[\s-]/g, ""));
     return matchRole && matchSearch;
   });
@@ -783,11 +783,11 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                     </div>
                   </div>
                   <div className="sc" style={{borderTopColor:"#0F766E"}}>
-                    <div className="sc-label">TSCs</div>
-                    <div className="sc-row" style={{alignItems:"baseline",gap:6,marginTop:2}}><div className="sv" style={{color:"#0F766E"}}>{overview?.stats?.total_tscs||0}</div><div className="sc-sub">Total</div></div>
+                    <div className="sc-label">TSEs/TSOs</div>
+                    <div className="sc-row" style={{alignItems:"baseline",gap:6,marginTop:2}}><div className="sv" style={{color:"#0F766E"}}>{overview?.stats?.total_tses||0}</div><div className="sc-sub">Total</div></div>
                     <div style={{display:"flex",gap:8,marginTop:5}}>
-                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#10B981"}}/><span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>{overview?.stats?.present_tscs||0}</span><span style={{fontSize:10,color:"#94A3B8"}}>Present</span></div>
-                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#EF4444"}}/><span style={{fontSize:11,fontWeight:700,color:"#EF4444"}}>{(overview?.stats?.total_tscs||0)-(overview?.stats?.present_tscs||0)}</span><span style={{fontSize:10,color:"#94A3B8"}}>Absent</span></div>
+                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#10B981"}}/><span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>{overview?.stats?.present_tses||0}</span><span style={{fontSize:10,color:"#94A3B8"}}>Present</span></div>
+                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#EF4444"}}/><span style={{fontSize:11,fontWeight:700,color:"#EF4444"}}>{(overview?.stats?.total_tses||0)-(overview?.stats?.present_tses||0)}</span><span style={{fontSize:10,color:"#94A3B8"}}>Absent</span></div>
                     </div>
                   </div>
                   <div className="sc" style={{borderTopColor:"#10B981"}}>
@@ -836,7 +836,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                         <tr key={ba.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...ba,role:"Brand Ambassador"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
                           <td className="td-name">{ba.full_name}</td><td style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{ba.employee_code}</td>
-                          <td className="td-sm">{ba.store_name||"—"}</td><td className="td-sm">{ba.tsc_name||"—"}</td>
+                          <td className="td-sm">{ba.store_name||"—"}</td><td className="td-sm">{ba.tse_name||"—"}</td>
                           <td className="tr-center"><span className="b bg">{ba.days_present}</span></td>
                           <td className="tr-center">{ba.sales_entries}</td><td className="tr-center">{ba.total_units}</td>
                           <td style={{textAlign:"right",fontWeight:800,color:"#10B981",fontFamily:"Poppins,sans-serif"}}>Rs {Number(ba.total_sales).toLocaleString()}</td>
@@ -845,10 +845,10 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                     </table></div>
                   </div>
                   <div className="two-col">
-                    <div className="card"><div className="ch"><div className="ct">⭐ Top TSCs — Team Sales</div></div>
+                    <div className="card"><div className="ch"><div className="ct">⭐ Top TSEs — Team Sales</div></div>
                       <div className="tbl"><table><thead><tr><th>#</th><th>Name</th><th>City</th><th>BAs</th><th style={{textAlign:"right"}}>Team Sales</th></tr></thead>
-                      <tbody>{topPerformers.topTSCs.length===0?<tr><td colSpan={5} className="empty">No data</td></tr>:topPerformers.topTSCs.map((t,i)=>(
-                        <tr key={t.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...t,role:"TSC"})}>
+                      <tbody>{topPerformers.topTSEs.length===0?<tr><td colSpan={5} className="empty">No data</td></tr>:topPerformers.topTSEs.map((t,i)=>(
+                        <tr key={t.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...t,role:"TSE"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
                           <td className="td-name">{t.full_name}</td><td className="td-sm">{t.city_name||"—"}</td>
                           <td className="tr-center"><span className="b bbl">{t.ba_count}</span></td>
@@ -857,12 +857,12 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                       ))}</tbody></table></div>
                     </div>
                     <div className="card"><div className="ch"><div className="ct">🥇 Top Area Managers</div></div>
-                      <div className="tbl"><table><thead><tr><th>#</th><th>Name</th><th>City</th><th>TSCs</th><th>BAs</th><th style={{textAlign:"right"}}>Territory Sales</th></tr></thead>
+                      <div className="tbl"><table><thead><tr><th>#</th><th>Name</th><th>City</th><th>TSEs/TSOs</th><th>BAs</th><th style={{textAlign:"right"}}>Territory Sales</th></tr></thead>
                       <tbody>{topPerformers.topAMs.length===0?<tr><td colSpan={6} className="empty">No data</td></tr>:topPerformers.topAMs.map((a,i)=>(
                         <tr key={a.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...a,role:"Area Manager"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
                           <td className="td-name">{a.full_name}</td><td className="td-sm">{a.city_name||"—"}</td>
-                          <td className="tr-center">{a.tsc_count}</td><td className="tr-center">{a.ba_count}</td>
+                          <td className="tr-center">{a.tse_count}</td><td className="tr-center">{a.ba_count}</td>
                           <td style={{textAlign:"right",fontWeight:800,color:"#10B981",fontFamily:"Poppins,sans-serif"}}>Rs {Number(a.total_sales).toLocaleString()}</td>
                         </tr>
                       ))}</tbody></table></div>
@@ -898,7 +898,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                     <div style={{display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
                       <div className="sw" style={{width:220}}><span className="si"><IcoSearch/></span><input placeholder="Name, CNIC, phone, code..." value={empSearch} onChange={e=>setEmpSearch(e.target.value)} /></div>
                       <select value={empRoleFilter} onChange={e=>setEmpRoleFilter(e.target.value)} style={{...s,width:110}}>
-                        <option value="all">All Roles</option><option value="BA">BA Only</option><option value="TSC">TSC Only</option><option value="AM">AM Only</option><option value="Admin">Admin Only</option>
+                        <option value="all">All Roles</option><option value="BA">BA Only</option><option value="TSE/TSO">TSE/TSO Only</option><option value="AM">AM Only</option><option value="Admin">Admin Only</option>
                       </select>
                       <button className="btn bp" onClick={()=>setShowAddEmp(true)}>+ Add Employee</button>
                     </div>
@@ -915,7 +915,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                           <td style={{fontSize:10,fontFamily:"monospace",color:"#64748B"}}>{e.cnic||"—"}</td>
                           <td><span className="b bgr">{e.role_name}</span></td>
                           <td className="td-sm">{e.store_name||"—"}</td><td className="td-sm">{e.shift_name||"—"}</td>
-                          <td className="td-sm">{e.tsc_name||"—"}</td><td className="td-sm">{e.am_name||e.city_name||"—"}</td>
+                          <td className="td-sm">{e.tse_name||"—"}</td><td className="td-sm">{e.am_name||e.city_name||"—"}</td>
                           <td><span className={`b ${e.is_active?"bg":"br"}`}>{e.is_active?"Active":"Inactive"}</span></td>
                           <td>
                             <select value="" onChange={(ev)=>{const v=ev.target.value;ev.currentTarget.value="";
@@ -947,7 +947,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                       <div className="emp-card-info">
                         {e.store_name&&<span className="b bg" style={{fontSize:10}}>Store: {e.store_name}</span>}
                         {e.shift_name&&<span className="b bgr" style={{fontSize:10}}>{e.shift_name}</span>}
-                        {e.tsc_name&&<span style={{fontSize:10,color:"#64748B"}}>TSC: {e.tsc_name}</span>}
+                        {e.tse_name&&<span style={{fontSize:10,color:"#64748B"}}>TSE: {e.tse_name}</span>}
                         {(e.am_name||e.city_name)&&<span style={{fontSize:10,color:"#64748B"}}>AM: {e.am_name||e.city_name}</span>}
                       </div>
                       <div className="emp-card-action">
@@ -979,12 +979,12 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                     <tbody>{baList.length===0?<tr><td colSpan={6} className="empty">No Brand Ambassadors</td></tr>:baList.map((ba: Record<string,any>)=>(
                       <tr key={ba.employee_id}>
                         <td><div className="assign-name">{ba.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{ba.employee_code}</div></td>
-                        <td><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{ba.store_name?<span className="b bg">{ba.store_name}</span>:<span className="b br">No Store</span>}{ba.shift_name&&<span className="b bgr">{ba.shift_name}</span>}{ba.tsc_name&&<span style={{fontSize:10,color:"#64748B"}}>{ba.tsc_name}</span>}</div></td>
+                        <td><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{ba.store_name?<span className="b bg">{ba.store_name}</span>:<span className="b br">No Store</span>}{ba.shift_name&&<span className="b bgr">{ba.shift_name}</span>}{ba.tse_name&&<span style={{fontSize:10,color:"#64748B"}}>{ba.tse_name}</span>}</div></td>
                         <td><select id={`bs-${ba.employee_id}`} style={s}><option value="">Select Store</option>{stores.map(st=><option key={`st-${st.store_id}`} value={st.store_id}>{st.store_name}</option>)}</select></td>
                         <td><select id={`bsh-${ba.employee_id}`} style={s}><option value="">Select Shift</option>{shifts.map(sh=><option key={`sh-${sh.shift_id}`} value={sh.shift_id}>{sh.shift_name}</option>)}</select></td>
-                        <td><select id={`bt-${ba.employee_id}`} style={s}><option value="">Select TSC</option>{tscList.map(t=><option key={t.employee_id} value={t.employee_id}>{t.full_name}</option>)}</select></td>
+                        <td><select id={`bt-${ba.employee_id}`} style={s}><option value="">Select TSE/TSO</option>{tseList.map(t=><option key={t.employee_id} value={t.employee_id}>{t.full_name}</option>)}</select></td>
                         <td><div style={{display:"flex",gap:5}}>
-                          <button className="btn bp btn-sm" onClick={()=>{const store=(document.getElementById(`bs-${ba.employee_id}`) as HTMLSelectElement).value;const shift=(document.getElementById(`bsh-${ba.employee_id}`) as HTMLSelectElement).value;const tsc=(document.getElementById(`bt-${ba.employee_id}`) as HTMLSelectElement).value;if(!store||!shift){showToast("Select store & shift",true);return;}doAction("/api/auth/admin-user","assign_store",{employee_id:ba.employee_id,store_id:store,shift_id:shift,tsc_employee_id:tsc||null});}}>Assign</button>
+                          <button className="btn bp btn-sm" onClick={()=>{const store=(document.getElementById(`bs-${ba.employee_id}`) as HTMLSelectElement).value;const shift=(document.getElementById(`bsh-${ba.employee_id}`) as HTMLSelectElement).value;const tse=(document.getElementById(`bt-${ba.employee_id}`) as HTMLSelectElement).value;if(!store||!shift){showToast("Select store & shift",true);return;}doAction("/api/auth/admin-user","assign_store",{employee_id:ba.employee_id,store_id:store,shift_id:shift,tse_employee_id:tse||null});}}>Assign</button>
                           {ba.store_name&&<button className="btn brd btn-sm" onClick={()=>doDelete(`${ba.full_name} assignment`,"remove_assignment",{employee_id:ba.employee_id})}>Remove</button>}
                         </div></td>
                       </tr>
@@ -995,17 +995,17 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                   <div className="ch"><div className="ct">TSC — AM & Store Assignment</div></div>
                   <div className="tbl"><table style={{width:"100%"}}>
                     <thead><tr><th>Employee</th><th>Current AM</th><th>Assign AM</th><th>City</th><th>Assign Store</th><th style={{width:160}}>Actions</th></tr></thead>
-                    <tbody>{tscList.length===0?<tr><td colSpan={6} className="empty">No TSCs</td></tr>:tscList.map((tsc: Record<string,any>)=>(
-                      <tr key={tsc.employee_id}>
-                        <td><div className="assign-name">{tsc.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{tsc.employee_code}</div></td>
-                        <td>{tsc.am_name?<span className="b bg">{tsc.am_name}</span>:<span className="b br">None</span>}</td>
-                        <td><select id={`ta-${tsc.employee_id}`} style={s}><option value="">Select AM</option>{amList.map(a=><option key={a.employee_id} value={a.employee_id}>{a.full_name}</option>)}</select></td>
-                        <td><select id={`tc-${tsc.employee_id}`} style={s}><option value="">Select City</option>{cities.map(c=><option key={`c-${c.city_id}`} value={c.city_id}>{c.city_name}</option>)}</select></td>
-                        <td><select id={`ts-${tsc.employee_id}`} style={s}><option value="">Select Store</option>{stores.map(st=><option key={`st-${st.store_id}`} value={st.store_id}>{st.store_name}</option>)}</select></td>
+                    <tbody>{tseList.length===0?<tr><td colSpan={6} className="empty">No TSEs/TSOs</td></tr>:tseList.map((tse: Record<string,any>)=>(
+                      <tr key={tse.employee_id}>
+                        <td><div className="assign-name">{tse.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{tse.employee_code}</div></td>
+                        <td>{tse.am_name?<span className="b bg">{tse.am_name}</span>:<span className="b br">None</span>}</td>
+                        <td><select id={`ta-${tse.employee_id}`} style={s}><option value="">Select AM</option>{amList.map(a=><option key={a.employee_id} value={a.employee_id}>{a.full_name}</option>)}</select></td>
+                        <td><select id={`tc-${tse.employee_id}`} style={s}><option value="">Select City</option>{cities.map(c=><option key={`c-${c.city_id}`} value={c.city_id}>{c.city_name}</option>)}</select></td>
+                        <td><select id={`ts-${tse.employee_id}`} style={s}><option value="">Select Store</option>{stores.map(st=><option key={`st-${st.store_id}`} value={st.store_id}>{st.store_name}</option>)}</select></td>
                         <td><div style={{display:"flex",gap:5}}>
-                          <button className="btn bp btn-sm" onClick={()=>{const a=(document.getElementById(`ta-${tsc.employee_id}`) as HTMLSelectElement).value;const c=(document.getElementById(`tc-${tsc.employee_id}`) as HTMLSelectElement).value;if(!a||!c){showToast("Select AM & city",true);return;}doAction("/api/auth/admin-user","assign_tsc",{tsc_employee_id:tsc.employee_id,am_employee_id:a,city_id:c});}}>AM</button>
-                          <button className="btn bg2 btn-sm" onClick={()=>{const st=(document.getElementById(`ts-${tsc.employee_id}`) as HTMLSelectElement).value;if(!st){showToast("Select store",true);return;}doAction("/api/auth/admin-user","assign_tsc_store",{tsc_employee_id:tsc.employee_id,store_id:st});}}>Store</button>
-                          {tsc.am_name&&<button className="btn brd btn-sm" onClick={()=>doDelete(`${tsc.full_name} AM assignment`,"remove_tsc_am",{tsc_employee_id:tsc.employee_id})}>Remove</button>}
+                          <button className="btn bp btn-sm" onClick={()=>{const a=(document.getElementById(`ta-${tse.employee_id}`) as HTMLSelectElement).value;const c=(document.getElementById(`tc-${tse.employee_id}`) as HTMLSelectElement).value;if(!a||!c){showToast("Select AM & city",true);return;}doAction("/api/auth/admin-user","assign_tse",{tse_employee_id:tse.employee_id,am_employee_id:a,city_id:c});}}>AM</button>
+                          <button className="btn bg2 btn-sm" onClick={()=>{const st=(document.getElementById(`ts-${tse.employee_id}`) as HTMLSelectElement).value;if(!st){showToast("Select store",true);return;}doAction("/api/auth/admin-user","assign_tse_store",{tse_employee_id:tse.employee_id,store_id:st});}}>Store</button>
+                          {tse.am_name&&<button className="btn brd btn-sm" onClick={()=>doDelete(`${tse.full_name} AM assignment`,"remove_tse_am",{tse_employee_id:tse.employee_id})}>Remove</button>}
                         </div></td>
                       </tr>
                     ))}</tbody>
@@ -1113,7 +1113,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                     <select value={attEmp} onChange={e=>setAttEmp(e.target.value)}>
                       <option key="all" value="all">All Employees</option>
                       <option key="grp-ba" value="grp:Brand Ambassador">— All BA</option>
-                      <option key="grp-tsc" value="grp:TSC">— All TSC</option>
+                      <option key="grp-tse" value="grp:TSC">— All TSE/TSO</option>
                       <option key="grp-am" value="grp:Area Manager">— All AM</option>
                       {employees.map(e=><option key={`emp-${e.employee_id}`} value={e.employee_id}>{e.full_name}</option>)}
                     </select>
@@ -1151,7 +1151,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                           <td className="td-sm">{a.check_out||<span style={{color:"#F59E0B"}}>Active</span>}</td>
                           <td className="td-sm">{a.hours}</td>
                           <td><span className={`b ${a.status==="Present"?"bg":"br"}`}>{a.status}</span></td>
-                          <td className="td-sm">{a.tsc_name||"—"}</td>
+                          <td className="td-sm">{a.tse_name||"—"}</td>
                           <td className="td-sm">{a.am_name||"—"}</td>
                           <td>{a.check_out&&<button className="btn bg2 btn-sm" onClick={()=>reCheckin(a.employee_id_num||0,a.date)}>Re-Check In</button>}</td>
                         </tr>
@@ -1172,7 +1172,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                     <select value={saleEmp} onChange={e=>setSaleEmp(e.target.value)}>
                       <option key="all" value="all">All Employees</option>
                       <option key="grp-ba" value="grp:Brand Ambassador">— All BA</option>
-                      <option key="grp-tsc" value="grp:TSC">— All TSC</option>
+                      <option key="grp-tse" value="grp:TSE/TSO">— All TSE/TSO</option>
                       <option key="grp-am" value="grp:Area Manager">— All AM</option>
                       {employees.map(e=><option key={`emp-${e.employee_id}`} value={e.employee_id}>{e.full_name}</option>)}
                     </select>
@@ -1221,7 +1221,7 @@ e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
                             <td><span className="b bgr b-xs" >{summary.role_name}</span></td>
                             <td className="td-sm">{summary.store_name}</td>
                             <td className="tr-center"><span className="b bbl" style={{fontSize:10}}>{skuCount} SKU{skuCount!==1?"s":""}</span></td>
-                            <td className="td-sm">{summary.tsc_name||"—"}</td>
+                            <td className="td-sm">{summary.tse_name||"—"}</td>
                             <td className="td-sm">{summary.am_name||"—"}</td>
                             <td className="tr-right td-green">Rs {total.toLocaleString()}</td>
                           </tr>

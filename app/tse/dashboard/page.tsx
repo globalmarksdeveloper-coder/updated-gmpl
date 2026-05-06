@@ -10,7 +10,7 @@ type BA = {
   ld_sales: number; mtd_sales: number;
 };
 
-export default function TSCDashboard() {
+export default function TSEDashboard() {
   const router = useRouter();
   const [time, setTime] = useState("");
   const [data, setData] = useState<Record<string, any> | null>(null);
@@ -29,7 +29,7 @@ export default function TSCDashboard() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res  = await fetch("/api/auth/tsc");
+      const res  = await fetch("/api/auth/tse");
       const json = await res.json();
       setData(json);
     } catch (_e: unknown) {}
@@ -64,77 +64,111 @@ export default function TSCDashboard() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+        :root {
+          --brand-1: #126291;
+          --brand-2: #1570a6;
+          --brand-3: #10537c;
+          --brand-4: #0d4567;
+
+          --brand-1-15: rgba(18,98,145,0.15);
+          --brand-2-20: rgba(21,112,166,0.20);
+          --brand-4-20: rgba(13,69,103,0.20);
+
+          --topbar-bg:   var(--brand-4);
+          --tab-active:  var(--brand-3);
+          --btn-primary: var(--brand-3);
+          --badge-role:  rgba(255,255,255,0.2);
+          --badge-text:  rgba(255,255,255,0.85);
+          --clock-color: rgba(255,255,255,0.75);
+
+          --success:      #10B981;
+          --success-bg:   #DCFCE7;
+          --success-text: #16A34A;
+          --danger:       #EF4444;
+          --danger-bg:    #FEE2E2;
+          --danger-text:  #DC2626;
+          --warning:      #F59E0B;
+          --warning-bg:   #FEF3C7;
+          --warning-text: #D97706;
+          --info:         #1D4ED8;
+          --info-bg:      #DBEAFE;
+
+          --white:   #ffffff;
+          --surface: #F8FAFC;
+          --bg:      #F1F5F9;
+          --border:  #E2E8F0;
+
+          --text-primary:   #0F172A;
+          --text-secondary: #334155;
+          --text-muted:     #64748B;
+          --text-subtle:    #94A3B8;
+
+          --shadow-modal: rgba(0,0,0,0.45);
+          --shadow-card:  rgba(18,98,145,0.15);
+        }
+
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{background:#F1F5F9;font-family:'Inter',sans-serif}
-        .root{min-height:100vh;color:#0F172A}
-        .topbar{background:#0F766E;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:8px;position:sticky;top:0;z-index:100}
+        body{background:var(--bg);font-family:inherit}
+        .root{min-height:100vh;color:var(--text-primary)}
+        .topbar{background:var(--topbar-bg);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:8px;position:sticky;top:0;z-index:100}
         .logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-        .logo-av{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:11px;color:#fff;flex-shrink:0}
-        .logo-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .logo-av{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0}
+        .logo-name{font-weight:800;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .logo-sub{font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.1em}
-        .clock{font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;color:#A7F3D0;flex-shrink:0}
+        .clock{font-size:15px;font-weight:800;color:var(--clock-color);flex-shrink:0}
         .tright{display:flex;align-items:center;gap:6px;flex-shrink:0}
-        .pill{padding:3px 10px;border-radius:20px;background:rgba(167,243,208,0.2);font-size:11px;color:#A7F3D0;font-weight:600}
+        .pill{padding:3px 10px;border-radius:20px;background:var(--badge-role);font-size:11px;color:var(--badge-text);font-weight:600}
         .logout{padding:5px 12px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.7);font-size:11px;cursor:pointer}
         .logout:hover{background:rgba(255,255,255,0.1)}
         .main{padding:16px 20px;max-width:1100px;margin:0 auto}
-        /* Tabs */
-        .tabs{display:flex;gap:4px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:4px;width:fit-content;margin-bottom:16px}
-        .tab{padding:7px 20px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;color:#64748B;background:transparent;transition:all 0.15s}
-        .tab.active{background:#0F766E;color:#fff}
-        /* Stat cards */
+        .tabs{display:flex;gap:4px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content;margin-bottom:16px}
+        .tab{padding:7px 20px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-muted);background:transparent;transition:all 0.15s}
+        .tab.active{background:var(--tab-active);color:#fff}
         .sg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
-        .sc{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:14px 16px;border-top:3px solid}
-        .sl{font-size:9px;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px}
-        .sv{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800}
-        .ss{font-size:10px;color:#94A3B8;margin-top:2px}
-        /* Attendance pct ring */
+        .sc{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;border-top:3px solid}
+        .sl{font-size:9px;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px}
+        .sv{font-size:20px;font-weight:800}
+        .ss{font-size:10px;color:var(--text-subtle);margin-top:2px}
         .pct-wrap{display:flex;align-items:center;gap:8px}
-        .pct-bar{flex:1;height:6px;background:#E2E8F0;border-radius:10px;overflow:hidden}
+        .pct-bar{flex:1;height:6px;background:var(--border);border-radius:10px;overflow:hidden}
         .pct-fill{height:100%;border-radius:10px;transition:width 0.5s}
-        /* Table */
-        .card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;margin-bottom:12px}
-        .ch{padding:10px 16px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
-        .ct{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700}
+        .card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
+        .ch{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+        .ct{font-size:13px;font-weight:700}
         .tbl{overflow-x:auto;-webkit-overflow-scrolling:touch}
         table{width:100%;border-collapse:collapse}
-        th{padding:7px 12px;text-align:left;font-size:9px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap}
-        td{padding:8px 12px;font-size:12px;border-bottom:1px solid #F8FAFC;color:#334155}
-        tr:hover td{background:#FAFAFA}
+        th{padding:7px 12px;text-align:left;font-size:9px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.05em;background:var(--surface);border-bottom:1px solid var(--border);white-space:nowrap}
+        td{padding:8px 12px;font-size:12px;border-bottom:1px solid var(--surface);color:var(--text-secondary)}
+        tr:hover td{background:var(--surface)}
         .b{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block;white-space:nowrap}
-        .bg{background:#DCFCE7;color:#16A34A}
-        .br{background:#FEE2E2;color:#DC2626}
-        .bgr{background:#F1F5F9;color:#64748B}
-        .by{background:#FEF3C7;color:#D97706}
-        .bbl{background:#DBEAFE;color:#1D4ED8}
-        .empty{padding:28px;text-align:center;color:#94A3B8;font-size:13px}
-        /* LD/MTD combined col */
+        .bg{background:var(--success-bg);color:var(--success-text)}
+        .br{background:var(--danger-bg);color:var(--danger-text)}
+        .bgr{background:var(--bg);color:var(--text-muted)}
+        .by{background:var(--warning-bg);color:var(--warning-text)}
+        .bbl{background:var(--info-bg);color:var(--info)}
+        .empty{padding:28px;text-align:center;color:var(--text-subtle);font-size:13px}
         .ldmtd{display:flex;flex-direction:column;gap:1px}
-        .ld-val{font-weight:700;color:#1E3A8A;font-size:11px}
-        .mtd-val{font-weight:700;color:#10B981;font-size:11px}
-        .ld-lbl,.mtd-lbl{font-size:9px;color:#94A3B8;font-weight:500}
-        /* Top performer card */
+        .ld-val{font-weight:700;color:var(--brand-4);font-size:11px}
+        .mtd-val{font-weight:700;color:var(--success);font-size:11px}
+        .ld-lbl,.mtd-lbl{font-size:9px;color:var(--text-subtle);font-weight:500}
         .perf-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
-        .perf-card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden}
-        .perf-card:hover{border-color:#0F766E;transform:translateY(-2px);box-shadow:0 4px 12px rgba(15,118,110,0.15)}
+        .perf-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden}
+        .perf-card:hover{border-color:var(--brand-2);transform:translateY(-2px);box-shadow:0 4px 12px var(--shadow-card)}
         .perf-rank{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff}
-        .perf-name{font-weight:700;font-size:12px;color:#0F172A;margin-bottom:2px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .perf-store{font-size:10px;color:#64748B;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .perf-sales{font-family:'Poppins',sans-serif;font-weight:800;font-size:14px;color:#10B981}
-        .perf-sub{font-size:9px;color:#94A3B8}
-        /* Modal */
-        .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
-        .modal{background:#fff;border-radius:14px;padding:20px;width:420px;max-width:100%;max-height:90vh;overflow-y:auto}
-        .mt{font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;margin-bottom:12px}
+        .perf-name{font-weight:700;font-size:12px;color:var(--text-primary);margin-bottom:2px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .perf-store{font-size:10px;color:var(--text-muted);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .perf-sales{font-weight:800;font-size:14px;color:var(--success)}
+        .perf-sub{font-size:9px;color:var(--text-subtle)}
+        .overlay{position:fixed;inset:0;background:var(--shadow-modal);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+        .modal{background:var(--white);border-radius:14px;padding:20px;width:420px;max-width:100%;max-height:90vh;overflow-y:auto}
+        .mt{font-size:15px;font-weight:800;margin-bottom:12px}
         .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-        .detail-box{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:8px 12px}
-        .detail-lbl{font-size:9px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
-        .detail-val{font-size:13px;font-weight:700;color:#0F172A}
+        .detail-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+        .detail-lbl{font-size:9px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
+        .detail-val{font-size:13px;font-weight:700;color:var(--text-primary)}
         .btn{padding:6px 14px;border-radius:7px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s}
-        .btn-teal{background:#0F766E;color:#fff}
-        .btn-gray{background:#F1F5F9;color:#64748B;border:1px solid #E2E8F0}
-        /* Responsive */
+        .btn-teal{background:var(--btn-primary);color:#fff}
+        .btn-gray{background:var(--bg);color:var(--text-muted);border:1px solid var(--border)}
         @media(max-width:900px){.sg{grid-template-columns:1fr 1fr 1fr}.perf-grid{grid-template-columns:1fr 1fr 1fr}}
         @media(max-width:600px){
           .sg{grid-template-columns:1fr 1fr}
@@ -158,13 +192,13 @@ export default function TSCDashboard() {
           <div className="logo">
             <div className="logo-av">TS</div>
             <div>
-              <div className="logo-name">GMPL — {data?.tscName || "TSC Dashboard"}</div>
-              <div className="logo-sub">Territory Sales Coordinator · {data?.amName ? `AM: ${data.amName}` : ""}</div>
+              <div className="logo-name">GMPL — {data?.tseName || data?.tseName || "TSE Dashboard"}</div>
+              <div className="logo-sub">Territory Sales Executive · {data?.amName ? `AM: ${data.amName}` : ""}</div>
             </div>
           </div>
           <div className="clock">{time}</div>
           <div className="tright">
-            <span className="pill">TSC</span>
+            <span className="pill">TSE</span>
             <button className="logout" onClick={logout}>Logout</button>
           </div>
         </div>
@@ -189,10 +223,10 @@ export default function TSCDashboard() {
                   {/* Stat cards — combined */}
                   <div className="sg" style={{gridTemplateColumns:"repeat(3,1fr)"}}>
                     {/* BAs: Total / Present / Absent */}
-                    <div className="sc" style={{ borderTopColor: "#0F766E" }}>
+                    <div className="sc" style={{ borderTopColor: "var(--brand-2)" }}>
                       <div className="sl">Brand Ambassadors</div>
                       <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}>
-                        <div style={{fontFamily:"Poppins,sans-serif",fontSize:24,fontWeight:800,color:"#0F766E"}}>{stats.total_bas||0}</div>
+                        <div style={{fontSize:24,fontWeight:800,color:"var(--brand-2)"}}>{stats.total_bas||0}</div>
                         <div style={{fontSize:12,color:"#64748B"}}>Total</div>
                       </div>
                       <div style={{display:"flex",gap:10,marginTop:6}}>
@@ -210,17 +244,17 @@ export default function TSCDashboard() {
                     </div>
 
                     {/* LD / MTD Sales */}
-                    <div className="sc" style={{ borderTopColor: "#1E3A8A" }}>
+                    <div className="sc" style={{ borderTopColor: "var(--brand-4)" }}>
                       <div className="sl">Sales</div>
                       <div style={{display:"flex",gap:16,marginTop:4,alignItems:"flex-end"}}>
                         <div>
                           <div style={{fontSize:9,fontWeight:700,color:"#94A3B8",letterSpacing:"0.06em",marginBottom:2}}>LAST DAY</div>
-                          <div style={{fontFamily:"Poppins,sans-serif",fontSize:16,fontWeight:800,color:"#1E3A8A"}}>Rs {Number(stats.ld_sales||0).toLocaleString()}</div>
+                          <div style={{fontSize:16,fontWeight:800,color:"var(--brand-4)"}}>Rs {Number(stats.ld_sales||0).toLocaleString()}</div>
                         </div>
                         <div style={{width:1,height:32,background:"#E2E8F0"}}/>
                         <div>
                           <div style={{fontSize:9,fontWeight:700,color:"#94A3B8",letterSpacing:"0.06em",marginBottom:2}}>MTD</div>
-                          <div style={{fontFamily:"Poppins,sans-serif",fontSize:16,fontWeight:800,color:"#10B981"}}>Rs {Number(stats.mtd_sales||0).toLocaleString()}</div>
+                          <div style={{fontSize:16,fontWeight:800,color:"#10B981"}}>Rs {Number(stats.mtd_sales||0).toLocaleString()}</div>
                         </div>
                       </div>
                       <div className="ss" style={{marginTop:4}}>Month To Date</div>
@@ -230,7 +264,7 @@ export default function TSCDashboard() {
                     <div className="sc" style={{ borderTopColor: "#F59E0B" }}>
                       <div className="sl">Attendance Rate</div>
                       <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}>
-                        <div style={{fontFamily:"Poppins,sans-serif",fontSize:24,fontWeight:800,color:stats.att_pct>=80?"#10B981":stats.att_pct>=50?"#F59E0B":"#EF4444"}}>{stats.att_pct||0}%</div>
+                        <div style={{fontSize:24,fontWeight:800,color:stats.att_pct>=80?"#10B981":stats.att_pct>=50?"#F59E0B":"#EF4444"}}>{stats.att_pct||0}%</div>
                         <div style={{fontSize:11,color:"#64748B"}}>Today</div>
                       </div>
                       <div className="pct-wrap" style={{marginTop:6}}>
@@ -311,7 +345,7 @@ export default function TSCDashboard() {
                   </div>
 
                   {/* Top Performers */}
-                  <div style={{ fontFamily: "Poppins,sans-serif", fontSize: 13, fontWeight: 700, marginBottom: 8 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>
                     🏆 Top Performing BAs — This Month
                   </div>
                   <div className="perf-grid">
@@ -397,7 +431,7 @@ export default function TSCDashboard() {
                     <div className="ct">BA Sales — LD & MTD</div>
                     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                       <span style={{ fontSize: 11, color: "#64748B" }}>
-                        LD: <strong style={{ color: "#1E3A8A" }}>Rs {Number(stats.ld_sales || 0).toLocaleString()}</strong>
+                        LD: <strong style={{ color: "var(--brand-4)" }}>Rs {Number(stats.ld_sales || 0).toLocaleString()}</strong>
                         &nbsp;·&nbsp; MTD: <strong style={{ color: "#10B981" }}>Rs {Number(stats.mtd_sales || 0).toLocaleString()}</strong>
                       </span>
                     </div>
@@ -420,8 +454,8 @@ export default function TSCDashboard() {
                             <td style={{ fontFamily: "monospace", fontSize: 10, color: "#94A3B8" }}>{ba.employee_code}</td>
                             <td style={{ fontSize: 11 }}>{ba.store_name}</td>
                             <td><span className={`b ${ba.check_in ? "bg" : "br"}`}>{ba.check_in ? "Present" : "Absent"}</span></td>
-                            <td style={{ fontWeight: 700, color: "#1E3A8A", fontFamily: "Poppins,sans-serif" }}>Rs {Number(ba.ld_sales).toLocaleString()}</td>
-                            <td style={{ fontWeight: 700, color: "#10B981", fontFamily: "Poppins,sans-serif" }}>Rs {Number(ba.mtd_sales).toLocaleString()}</td>
+                            <td style={{ fontWeight: 700, color: "var(--brand-4)" }}>Rs {Number(ba.ld_sales).toLocaleString()}</td>
+                            <td style={{ fontWeight: 700, color: "#10B981" }}>Rs {Number(ba.mtd_sales).toLocaleString()}</td>
                             <td style={{ textAlign: "center" }}>{ba.days_present_mtd}</td>
                           </tr>
                         ))}
@@ -444,20 +478,20 @@ export default function TSCDashboard() {
               </div>
               <div className="detail-grid" style={{ marginBottom: 12 }}>
                 {[
-                  { label: "Employee Code", value: selected.employee_code },
-                  { label: "Store",          value: selected.store_name },
-                  { label: "Shift",          value: selected.shift_name || "—" },
-                  { label: "Today Status",   value: selected.check_in ? (selected.check_out ? "Shift Done" : "Present") : "Absent" },
-                  { label: "Check In",       value: fmt(selected.check_in) },
-                  { label: "Check Out",      value: fmt(selected.check_out) },
+                  { label: "Employee Code",    value: selected.employee_code },
+                  { label: "Store",            value: selected.store_name },
+                  { label: "Shift",            value: selected.shift_name || "—" },
+                  { label: "Today Status",     value: selected.check_in ? (selected.check_out ? "Shift Done" : "Present") : "Absent" },
+                  { label: "Check In",         value: fmt(selected.check_in) },
+                  { label: "Check Out",        value: fmt(selected.check_out) },
                   { label: "Days Present MTD", value: `${selected.days_present_mtd} / ${selected.total_working_days}` },
-                  { label: "Attendance %",   value: `${pct(selected.days_present_mtd, selected.total_working_days)}%` },
-                  { label: "LD Sales",       value: `Rs ${Number(selected.ld_sales).toLocaleString()}` },
-                  { label: "MTD Sales",      value: `Rs ${Number(selected.mtd_sales).toLocaleString()}` },
+                  { label: "Attendance %",     value: `${pct(selected.days_present_mtd, selected.total_working_days)}%` },
+                  { label: "LD Sales",         value: `Rs ${Number(selected.ld_sales).toLocaleString()}` },
+                  { label: "MTD Sales",        value: `Rs ${Number(selected.mtd_sales).toLocaleString()}` },
                 ].map(item => (
                   <div key={item.label} className="detail-box">
                     <div className="detail-lbl">{item.label}</div>
-                    <div className="detail-val" style={{ color: item.label.includes("Sales") ? (item.label === "LD Sales" ? "#1E3A8A" : "#10B981") : "#0F172A" }}>
+                    <div className="detail-val" style={{ color: item.label.includes("Sales") ? (item.label === "LD Sales" ? "var(--brand-4)" : "#10B981") : "var(--text-primary)" }}>
                       {item.value}
                     </div>
                   </div>

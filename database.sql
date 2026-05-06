@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict MgSGcHS4BnQhzm4CSGJExCHMHgxbP40OUb7sHzrsDAZp9krQJ1iW4pwQ3mL3kCn
+\restrict G7iNvtfbJyJSDtzFwrvhNXL1hEgiIlk2abPX3t0zBtb5bJ1tqEL9gLE6BGkUc2j
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -1139,9 +1139,9 @@ COPY public.gm_employees (employee_id, user_id, role_id, phone, status, joining_
 
 COPY public.gm_users (user_id, full_name, email, password_hash, role_id, is_active, created_at, cnic, father_name, address, bank_name, bank_account, iban, phone) FROM stdin;
 2	Super Admin	admin@gmail.com	$2a$10$dSr10wbg2oivdrTGfbW75.F3nnvfI4PDsGkPY5JAAfCj6qCBsXse6	1	t	2026-05-02 09:53:37.576006	\N	\N	\N	\N	\N	\N	03000000001
-3	Ali	am@gmail.com	$2a$10$eutAXNrzT7E4yYCCQrDMk.YEczekJl5alXG5uwwLeXLf6f/XHM1LK	2	t	2026-05-02 09:54:08.633119	\N	\N	\N	\N	\N	\N	03000000002
-4	Ameer	tsc@gmail.com	$2a$10$3/GIgOCMoY2zYCewf3cvPewD8eDhOdcQOitdMOE6PmdqA4d0iaHR.	3	t	2026-05-02 09:54:44.969625	\N	\N	\N	\N	\N	\N	03000000003
-5	Amna	ba@gmail.com	$2a$10$1ac9uhMm7G3dFTCv9pMdHuCWi0HU9SWmVfpEyXS0zZS/Rukihokiu	4	t	2026-05-02 09:55:20.01588	\N	\N	\N	\N	\N	\N	03000000004
+5	Amna	ba@gmail.com	$2a$10$1ac9uhMm7G3dFTCv9pMdHuCWi0HU9SWmVfpEyXS0zZS/Rukihokiu	4	t	2026-05-02 09:55:20.01588	12345-6789012-1	\N	\N	\N	\N	\N	03000000004
+4	Ameer	tsc@gmail.com	$2a$10$3/GIgOCMoY2zYCewf3cvPewD8eDhOdcQOitdMOE6PmdqA4d0iaHR.	3	t	2026-05-02 09:54:44.969625	12345-6789012-2	\N	\N	\N	\N	\N	03000000003
+3	Ali	am@gmail.com	$2a$10$eutAXNrzT7E4yYCCQrDMk.YEczekJl5alXG5uwwLeXLf6f/XHM1LK	2	t	2026-05-02 09:54:08.633119	12345-6789012-3	\N	\N	\N	\N	\N	03000000002
 \.
 
 
@@ -1538,6 +1538,7 @@ COPY public.store_pricing (pricing_id, store_id, sku_id, tse_price, ba_price, ef
 
 COPY public.stores (store_id, store_name, city_id, address, latitude, longitude, allowed_radius_meters, created_at) FROM stdin;
 1	Store A	101	Islamabad	33.68440000	73.04790000	100	2026-05-02 10:42:11.610305
+19	store B	101	street A	33.44558844	73.45656540	100	2026-05-05 14:07:25.950342
 \.
 
 
@@ -1686,7 +1687,7 @@ SELECT pg_catalog.setval('public.store_pricing_pricing_id_seq', 1, false);
 -- Name: stores_store_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.stores_store_id_seq', 1, true);
+SELECT pg_catalog.setval('public.stores_store_id_seq', 19, true);
 
 
 --
@@ -2224,5 +2225,5 @@ ALTER TABLE ONLY public.tsc_store_assignments
 -- PostgreSQL database dump complete
 --
 
-\unrestrict MgSGcHS4BnQhzm4CSGJExCHMHgxbP40OUb7sHzrsDAZp9krQJ1iW4pwQ3mL3kCn
+\unrestrict G7iNvtfbJyJSDtzFwrvhNXL1hEgiIlk2abPX3t0zBtb5bJ1tqEL9gLE6BGkUc2j
 

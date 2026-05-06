@@ -6,14 +6,14 @@ import jwt from 'jsonwebtoken'
 const ROLE_MAP: Record<string, string> = {
   admin: 'Admin',
   am:    'Area Manager',
-  tsc:   'TSC',
+  tse:   'TSE/TSO',
   ba:    'Brand Ambassador',
 }
 
 const ROLE_REDIRECTS: Record<string, string> = {
   admin: '/admin/dashboard',
   am:    '/am/dashboard',
-  tsc:   '/tsc/dashboard',
+  tse:   '/tse/dashboard',
   ba:    '/ba/dashboard',
 }
 

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     if (!cleanPhone || !/^03\d{9}$/.test(cleanPhone)) return NextResponse.json({ message: 'Phone must be 11 digits starting with 03' }, { status: 400 })
 
     // Role ID mapping
-    const roleMap: Record<string, number> = { admin: 1, am: 2, tsc: 3, ba: 4 }
+    const roleMap: Record<string, number> = { admin: 1, am: 2, tse: 3, ba: 4 }
     const role_id = roleMap[role]
     if (!role_id) return NextResponse.json({ message: 'Invalid role' }, { status: 400 })
 

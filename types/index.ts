@@ -1,6 +1,6 @@
 // ─── Auth & User ──────────────────────────────────────────────────────────────
 
-export type Role = 'admin' | 'am' | 'tsc' | 'ba';
+export type Role = 'admin' | 'am' | 'tse' | 'ba';
 
 export interface JwtPayload {
   userId: number;
@@ -48,7 +48,7 @@ export interface StoreAssignment {
   shift_id: number;
   store_name: string;
   shift_name: string;
-  tsc_employee_id?: number | null;
+  tse_employee_id?: number | null;
   is_active: boolean;
 }
 
@@ -137,7 +137,7 @@ export interface Employee {
   role_id: number;
   store_name: string | null;
   shift_name: string | null;
-  tsc_name: string | null;
+  tse_name: string | null;
   am_name: string | null;
   city_name: string | null;
 }
@@ -196,9 +196,9 @@ export interface StoreWithData {
 }
 
 export interface TscWithData {
-  tsc_id: number;
-  tsc_code: string;
-  tsc_name: string;
+  tse_id: number;
+  tse_code: string;
+  tse_name: string;
   stores: StoreWithData[];
   today_sales: number;
   present_today: number;
@@ -210,7 +210,7 @@ export interface TscWithData {
 export interface FlatAttendanceRow {
   full_name: string;
   employee_code: string;
-  tsc_name: string;
+  tse_name: string;
   store_name: string;
   shift_name: string;
   check_in_time: string | null;
@@ -221,7 +221,7 @@ export interface FlatAttendanceRow {
 export interface FlatSalesRow {
   full_name: string;
   employee_code: string;
-  tsc_name: string;
+  tse_name: string;
   store_name: string;
   remarks: string | null;
   total_sales: number;

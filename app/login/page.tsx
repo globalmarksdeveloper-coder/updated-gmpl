@@ -9,14 +9,14 @@ import Link from "next/link";
 const ROLES = [
   { key: "admin", label: "Admin",            icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
   { key: "am",    label: "Area Manager",      icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" },
-  { key: "tsc",   label: "TSC",               icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" },
+  { key: "tse",   label: "TSE/TSO",               icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" },
   { key: "ba",    label: "Brand Ambassador",  icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" },
 ];
 
 const ROLE_REDIRECTS: Record<string, string> = {
   admin: "/admin/dashboard",
   am:    "/am/dashboard",
-  tsc:   "/tsc/dashboard",
+  tse:   "/tse/dashboard",
   ba:    "/ba/dashboard",
 };
 
@@ -81,7 +81,7 @@ export default function LoginPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; }
 
@@ -106,7 +106,7 @@ export default function LoginPage() {
 
         /* LEFT PANEL */
         .left-panel {
-          background: linear-gradient(145deg, #0B1E5B 0%, #0D2468 50%, #091A52 100%);
+            background: linear-gradient(145deg, #042F49 0%, #073D5F 50%, #0B4F77 100%);
           padding: 44px 40px;
           display: flex;
           flex-direction: column;
@@ -150,18 +150,19 @@ export default function LoginPage() {
           display: flex; align-items: center; justify-content: center;
           border: 1px solid rgba(255,255,255,0.15);
         }
-        .brand-name { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px; color: #fff; line-height: 1.2; }
+        .brand-name { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 16px; color: #fff; line-height: 1.2; }
         .brand-sub  { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; }
 
         .hero-text { position: relative; z-index: 1; }
         .hero-text h1 {
-          font-family: 'Outfit', sans-serif;
-          font-size: 36px; font-weight: 800;
+          font-family: 'Poppins', sans-serif;
+          font-size: 52px; font-weight: 800;
+          padding-top:60px;
           color: #fff; line-height: 1.15;
           letter-spacing: -0.02em;
           margin-bottom: 12px;
         }
-        .hero-text h1 span { color: #10B981; }
+        .hero-text h1 span { color: #63A0C4; }
         .hero-text p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.65; max-width: 300px; }
 
         .features-grid {
@@ -178,7 +179,7 @@ export default function LoginPage() {
         .feature-card:hover { background: rgba(255,255,255,0.1); }
         .feature-icon {
           width: 32px; height: 32px;
-          background: rgba(16,185,129,0.2);
+          background: #0d527a;
           border-radius: 8px;
           display: flex; align-items: center; justify-content: center;
           margin-bottom: 8px;
@@ -186,22 +187,6 @@ export default function LoginPage() {
         .feature-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 3px; }
         .feature-desc  { font-size: 10.5px; color: rgba(255,255,255,0.45); line-height: 1.4; }
 
-        .left-footer {
-          position: relative; z-index: 1;
-          border-top: 1px solid rgba(255,255,255,0.1);
-          padding-top: 20px;
-        }
-        .left-footer p { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
-        .signup-btn {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 10px 18px; border-radius: 10px;
-          border: 1.5px solid rgba(255,255,255,0.2);
-          background: rgba(255,255,255,0.07);
-          color: #fff; font-size: 13px; font-weight: 600;
-          text-decoration: none; cursor: pointer;
-          transition: all 0.2s;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
         .signup-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.35); }
 
         /* RIGHT PANEL */
@@ -217,7 +202,7 @@ export default function LoginPage() {
         .online-badge {
           display: inline-flex; align-items: center; gap: 6px;
           padding: 5px 12px; border-radius: 20px;
-          background: rgba(16,185,129,0.1);
+          background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(16,185,129,0.25);
           margin-bottom: 20px; width: fit-content;
         }
@@ -225,10 +210,10 @@ export default function LoginPage() {
         @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
         .online-text { font-size: 11px; font-weight: 600; color: #065f46; letter-spacing: 0.04em; }
 
-        .welcome-title { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; color: #0F172A; letter-spacing: -0.02em; margin-bottom: 4px; }
+        .welcome-title { font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 800; color: #0F172A; letter-spacing: -0.02em; margin-bottom: 4px; }
         .welcome-sub   { font-size: 13px; color: #64748B; margin-bottom: 24px; }
 
-        .section-label { font-size: 12px; font-weight: 600; color: #0F172A; margin-bottom: 10px; font-family: 'Outfit', sans-serif; }
+        .section-label { font-size: 12px; font-weight: 600; color: #0F172A; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
 
         .roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
         .role-btn {
@@ -279,16 +264,16 @@ export default function LoginPage() {
         .remember-wrap { display: flex; align-items: center; gap: 7px; cursor: pointer; }
         .remember-wrap input[type=checkbox] { width: 15px; height: 15px; accent-color: #1E3A8A; cursor: pointer; }
         .remember-wrap span { font-size: 12.5px; color: #475569; }
-        .forgot-link { font-size: 12.5px; color: #3B82F6; font-weight: 500; text-decoration: none; }
-        .forgot-link:hover { color: #1E3A8A; }
+        .forgot-link { font-size: 12.5px; color: #0D4066; font-weight: 500; text-decoration: none; }
+        .forgot-link:hover { color: #0D4066; }
 
         .login-btn {
           width: 100%; height: 48px; border-radius: 12px; border: none;
-          background: linear-gradient(135deg, #1E3A8A 0%, #1e40af 100%);
+          background: linear-gradient(135deg, #0D4066 0%, #1571AE 100%);
           color: #fff; font-size: 14px; font-weight: 700;
           cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
           transition: all 0.2s; margin-bottom: 10px;
-          font-family: 'Outfit', sans-serif; letter-spacing: 0.02em;
+          font-family: 'Poppins', sans-serif; letter-spacing: 0.02em;
           box-shadow: 0 4px 16px rgba(30,58,138,0.35);
         }
         .login-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,58,138,0.45); }
@@ -297,7 +282,7 @@ export default function LoginPage() {
         .create-btn {
           width: 100%; height: 44px; border-radius: 12px;
           border: 1.5px solid #E2E8F0; background: #fff;
-          color: #475569; font-size: 13px; font-weight: 600;
+          color: #0D4567; font-size: 13px; font-weight: 600;
           cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
           text-decoration: none; transition: all 0.2s; margin-bottom: 20px;
           font-family: 'Plus Jakarta Sans', sans-serif;
@@ -344,15 +329,15 @@ export default function LoginPage() {
               <ellipse cx="150" cy="150" rx="140" ry="60" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
               <ellipse cx="150" cy="150" rx="140" ry="100" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
               <line x1="10" y1="150" x2="290" y2="150" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-              <circle cx="150" cy="80" r="6" fill="#10B981" opacity="0.8"/>
-              <circle cx="200" cy="160" r="4" fill="#3B82F6" opacity="0.8"/>
-              <circle cx="100" cy="190" r="5" fill="#10B981" opacity="0.6"/>
+              <circle cx="150" cy="80" r="6" fill="#1570A6" opacity="0.8"/>
+              <circle cx="200" cy="160" r="4" fill="#10537C" opacity="0.8"/>
+              <circle cx="100" cy="190" r="5" fill="#1570A6" opacity="0.6"/>
             </svg>
 
             {/* Brand */}
             <div className="brand-row">
               {/* <div className="brand-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#63A0C4" strokeWidth="2.5">
                   <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
                 </svg>
               </div> */}
@@ -374,7 +359,7 @@ export default function LoginPage() {
               {FEATURES.map(f => (
                 <div className="feature-card" key={f.title}>
                   <div className="feature-icon">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#10B981" strokeWidth="1.8">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#63A0C4" strokeWidth="1.8">
                       <path d={f.icon} strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
@@ -382,17 +367,6 @@ export default function LoginPage() {
                   <div className="feature-desc">{f.desc}</div>
                 </div>
               ))}
-            </div>
-
-            {/* Footer */}
-            <div className="left-footer">
-              <p>New to GMPL Field System?</p>
-              <a href="/signup" className="signup-btn">
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
-                </svg>
-                Create a new account →
-              </a>
             </div>
           </div>
 

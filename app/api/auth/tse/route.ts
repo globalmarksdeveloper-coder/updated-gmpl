@@ -4,25 +4,25 @@ import { getUserFromRequest } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   const user = getUserFromRequest(request)
-  if (!user || user.role !== 'tsc') return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  if (!user || user.role !== 'tse') return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
 
   const employeeId = user.employeeId
   const today = new Date().toISOString().split('T')[0]
   const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0]
 
   try {
-    // TSC info
-    const { rows: [tscInfo] } = await query(`
+    // TSE info
+    const { rows: [tseInfo] } = await query(`
       SELECT u.full_name, e.employee_code, au.full_name AS am_name
       FROM gm_employees e
       JOIN gm_users u ON e.user_id = u.user_id
-      LEFT JOIN am_tsc_assignments ata ON ata.tsc_employee_id = e.employee_id AND ata.is_active = TRUE
+      LEFT JOIN am_tse_assignments ata ON ata.tse_employee_id = e.employee_id AND ata.is_active = TRUE
       LEFT JOIN gm_employees ae ON ata.am_employee_id = ae.employee_id
       LEFT JOIN gm_users au ON ae.user_id = au.user_id
       WHERE e.employee_id = $1
     `, [employeeId])
 
-    // All BAs assigned to this TSC with LD + MTD sales + attendance
+    // All BAs assigned to this TSE with LD + MTD sales + attendance
     const { rows: bas } = await query(`
       SELECT
         e.employee_id, e.employee_code, u.full_name AS ba_name,
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
       JOIN roles r         ON e.role_id = r.role_id AND LOWER(r.role_name)='brand ambassador'
       JOIN stores s        ON esa.store_id = s.store_id
       LEFT JOIN shifts sh  ON esa.shift_id = sh.shift_id
-      WHERE esa.tsc_employee_id = $1 AND esa.is_active = TRUE AND u.is_active = TRUE
+      WHERE esa.tse_employee_id = $1 AND esa.is_active = TRUE AND u.is_active = TRUE
       ORDER BY s.store_name, u.full_name
     `, [employeeId, monthStart])
 
@@ -71,9 +71,9 @@ export async function GET(request: NextRequest) {
       .slice(0, 5)
 
     return NextResponse.json({
-      tscName: tscInfo?.full_name,
-      tscCode: tscInfo?.employee_code,
-      amName:  tscInfo?.am_name,
+      tseName: tseInfo?.full_name,
+      tseCode: tseInfo?.employee_code,
+      amName:  tseInfo?.am_name,
       stats: {
         total_bas: totalBAs,
         present_today: presentToday,
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       monthStart,
     })
   } catch (err: unknown) {
-    console.error('TSC API error:', err instanceof Error ? err.message : String(err))
+    console.error('TSE API error:', err instanceof Error ? err.message : String(err))
     return NextResponse.json({ message: err instanceof Error ? err.message : String(err) }, { status: 500 })
   }
 }

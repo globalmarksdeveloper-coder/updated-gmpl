@@ -5,10 +5,11 @@ import { Role } from '@/types';
 
 const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
+
 const ROLE_HOME: Record<Role, string> = {
   admin: '/admin/dashboard',
   am:    '/am/dashboard',
-  tsc:   '/tsc/dashboard',
+  tse:   '/tse/dashboard',
   ba:    '/ba/dashboard',
 };
 
@@ -21,7 +22,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
       pathname.startsWith('/admin') ||
       pathname.startsWith('/ba')    ||
       pathname.startsWith('/am')    ||
-      pathname.startsWith('/tsc')
+      pathname.startsWith('/tse')
     ) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
@@ -45,7 +46,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     if (pathname.startsWith('/am') && userRole !== 'am') {
       return NextResponse.redirect(new URL(ROLE_HOME[userRole] || '/login', request.url));
     }
-    if (pathname.startsWith('/tsc') && userRole !== 'tsc') {
+    if (pathname.startsWith('/tse') && userRole !== 'tse') {
       return NextResponse.redirect(new URL(ROLE_HOME[userRole] || '/login', request.url));
     }
 
@@ -58,5 +59,5 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/signup', '/admin/:path*', '/ba/:path*', '/am/:path*', '/tsc/:path*'],
+  matcher: ['/', '/login', '/signup', '/admin/:path*', '/ba/:path*', '/am/:path*', '/tse/:path*'],
 };
