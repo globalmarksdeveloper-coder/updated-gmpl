@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Logo from "@/public/gmpl-logo/gmpl-favicon.svg";
 
 export default function AMDashboard() {
   const router = useRouter();
@@ -104,7 +106,7 @@ export default function AMDashboard() {
         .root{min-height:100vh;color:var(--text-primary)}
         .topbar{background:var(--topbar-bg);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:8px;position:sticky;top:0;z-index:100}
         .logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-        .logo-av{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0}
+        .logo-av{width:30px;height:30px;border-radius:8px;padding:5px;border-radius:50px;background: #fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0}
         .logo-name{font-weight:800;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .logo-sub{font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.1em}
         .clock{font-size:15px;font-weight:800;color:var(--clock-color);flex-shrink:0}
@@ -179,9 +181,10 @@ export default function AMDashboard() {
       <div className="root">
         <div className="topbar">
           <div className="logo">
-            <div className="logo-av">AM</div>
+            <div className="logo-av"><Image src={Logo} alt="TrackForce Logo" width={250} height={50} /></div>
             <div>
-              <div className="logo-name">GMPL — {data?.amName || "AM Dashboard"}</div>
+              <div className="logo-name">{data?.amName || "AM Dashboard"}</div>
+              
               <div className="logo-sub">Area Manager · {data?.cityName || ""}</div>
             </div>
           </div>

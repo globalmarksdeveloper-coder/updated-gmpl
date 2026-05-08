@@ -73,6 +73,19 @@ export async function POST(request: NextRequest) {
       }, { status: 403 })
     }
 
+    // Check if resignation was approved — block login
+    const { rows: resignCheck } = await query(`
+      SELECT leave_id FROM leaves
+      WHERE employee_id = $1 AND leave_type = 'resignation' AND status = 'approved'
+      LIMIT 1
+    `, [user.employee_id])
+    if (resignCheck.length > 0) {
+      return NextResponse.json({
+        message: 'Your resignation has been approved. This account is no longer active. Please contact admin for any queries.',
+        field: 'account',
+      }, { status: 403 })
+    }
+
     // Step 3: Check password
     const passwordMatch = await bcrypt.compare(password, user.password_hash)
     if (!passwordMatch) {

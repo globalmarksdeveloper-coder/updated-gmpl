@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
+import Logo from "@/public/gmpl-logo/gmpl-favicon.svg";
 const TABS = ["overview","employees","assignments","stores","prices","attendance","sales"];
 
 const IcoOverview = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>;
@@ -97,7 +98,7 @@ function EmployeeDetailModal({
             <div style={{display:"flex",gap:14,marginTop:8,flexWrap:"wrap"}}>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>Total Sales</div><div style={{fontSize:15,fontWeight:800,color:"#10B981"}}>Rs {grandTotal.toLocaleString()}</div></div>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>Days Present</div><div style={{fontSize:15,fontWeight:800,color:"#60A5FA"}}>{daysPresent}</div></div>
-              <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>TSC</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.tse_name||"—"}</div></div>
+              <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>TSE</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.tse_name||"—"}</div></div>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>AM</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.am_name||"—"}</div></div>
             </div>
           </div>
@@ -503,7 +504,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
         /* ── TOPBAR ── */
         .topbar{background:#0F172A;display:flex;align-items:center;padding:0 16px;height:52px;position:sticky;top:0;z-index:100;gap:8px}
         .topbar-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;overflow:hidden}
-        .logo-avatar{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:10px;color:#fff;flex-shrink:0}
+        .logo-avatar{width:28px;height:28px;border-radius:7px;padding:5px;border-radius:50px;background: #fff;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:10px;color:#fff;flex-shrink:0}
         .logo-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
         .logo-sub{font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap}
         .topbar-clock{font-family:'Poppins',sans-serif;font-size:14px;font-weight:800;color:#10B981;flex-shrink:0;padding:0 8px}
@@ -730,7 +731,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
       <div className="root">
         <div className="topbar">
           <div className="topbar-left">
-            <div className="logo-avatar">AD</div>
+            <div className="logo-avatar"><Image src={Logo} alt="TrackForce Logo" width={250} height={50} /></div>
             <div className="topbar-left-text">
               <div className="logo-name">GMPL — Admin Dashboard</div>
               <div className="logo-sub">Super Admin · Full Access</div>
@@ -831,7 +832,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <div className="card" style={{marginBottom:10}}>
                     <div className="ch"><div className="ct">🏆 Top Brand Ambassadors — Sales</div></div>
                     <div className="tbl"><table>
-                      <thead><tr><th>#</th><th>Name</th><th>Code</th><th>Store</th><th>TSC</th><th>Days Present</th><th>Entries</th><th>Units</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
+                      <thead><tr><th>#</th><th>Name</th><th>Code</th><th>Store</th><th>TSE</th><th>Days Present</th><th>Entries</th><th>Units</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
                       <tbody>{topPerformers.topBAs.length===0?<tr><td colSpan={9} className="empty">No sales data for this period</td></tr>:topPerformers.topBAs.map((ba,i)=>(
                         <tr key={ba.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...ba,role:"Brand Ambassador"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
@@ -904,7 +905,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     </div>
                   </div>
                   <div className="tbl"><table>
-                    <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>CNIC / ID</th><th>Role</th><th>Store</th><th>Shift</th><th>TSC</th><th>AM/City</th><th>Status</th><th>Action</th></tr></thead>
+                    <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>CNIC / ID</th><th>Role</th><th>Store</th><th>Shift</th><th>TSE</th><th>AM/City</th><th>Status</th><th>Action</th></tr></thead>
                     <tbody>
                       {filteredEmps.length===0?<tr><td colSpan={11} className="empty">No employees found</td></tr>
                       :filteredEmps.map((e: Record<string,any>,i: number)=>(
@@ -973,9 +974,9 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <>
                 <div className="section-title">Manage Assignments</div>
                 <div className="card" style={{marginBottom:12}}>
-                  <div className="ch"><div className="ct">Brand Ambassadors — Store / Shift / TSC</div></div>
+                  <div className="ch"><div className="ct">Brand Ambassadors — Store / Shift / TSE</div></div>
                   <div className="tbl"><table style={{width:"100%"}}>
-                    <thead><tr><th>Employee</th><th>Current</th><th>New Store</th><th>New Shift</th><th>New TSC</th><th style={{width:140}}>Actions</th></tr></thead>
+                    <thead><tr><th>Employee</th><th>Current</th><th>New Store</th><th>New Shift</th><th>New TSE</th><th style={{width:140}}>Actions</th></tr></thead>
                     <tbody>{baList.length===0?<tr><td colSpan={6} className="empty">No Brand Ambassadors</td></tr>:baList.map((ba: Record<string,any>)=>(
                       <tr key={ba.employee_id}>
                         <td><div className="assign-name">{ba.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{ba.employee_code}</div></td>
@@ -992,7 +993,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   </table></div>
                 </div>
                 <div className="card" style={{marginBottom:12}}>
-                  <div className="ch"><div className="ct">TSC — AM & Store Assignment</div></div>
+                  <div className="ch"><div className="ct">TSE — AM & Store Assignment</div></div>
                   <div className="tbl"><table style={{width:"100%"}}>
                     <thead><tr><th>Employee</th><th>Current AM</th><th>Assign AM</th><th>City</th><th>Assign Store</th><th style={{width:160}}>Actions</th></tr></thead>
                     <tbody>{tseList.length===0?<tr><td colSpan={6} className="empty">No TSEs/TSOs</td></tr>:tseList.map((tse: Record<string,any>)=>(
@@ -1106,14 +1107,14 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <div className="fl"><label className="fl-label">To</label><input type="date" value={attDateTo} onChange={e=>setAttDateTo(e.target.value)}/></div>
                   <div className="fl"><label className="fl-label">Role</label>
                     <select value={attRole} onChange={e=>setAttRole(e.target.value)}>
-                      <option value="all">All Roles</option><option value="Brand Ambassador">BA Only</option><option value="TSC">TSC Only</option><option value="Area Manager">AM Only</option>
+                      <option value="all">All Roles</option><option value="Brand Ambassador">BA Only</option><option value="TSE">TSE Only</option><option value="Area Manager">AM Only</option>
                     </select>
                   </div>
                   <div className="fl"><label className="fl-label">Employee</label>
                     <select value={attEmp} onChange={e=>setAttEmp(e.target.value)}>
                       <option key="all" value="all">All Employees</option>
                       <option key="grp-ba" value="grp:Brand Ambassador">— All BA</option>
-                      <option key="grp-tse" value="grp:TSC">— All TSE/TSO</option>
+                      <option key="grp-tse" value="grp:TSE">— All TSE/TSO</option>
                       <option key="grp-am" value="grp:Area Manager">— All AM</option>
                       {employees.map(e=><option key={`emp-${e.employee_id}`} value={e.employee_id}>{e.full_name}</option>)}
                     </select>
@@ -1131,12 +1132,12 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <span className="dl-label">Download:</span>
                   <button className="btn bg2 btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo,employee_id:attEmp.startsWith("grp:")?"all":attEmp,role_filter:attEmp.startsWith("grp:")?attEmp.replace("grp:",""):attRole,store_id:attStore})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> Filtered</button>
                   <button className="btn bp btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> All</button>
-                  {(["Brand Ambassador","TSC","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSC"}</button>))}
+                  {(["Brand Ambassador","TSE","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSE"}</button>))}
                 </div>
                 <div className="card">
                   <div className="ch"><div className="ct">Attendance Records</div><span style={{fontSize:11,color:"#64748B"}}>{filteredAtt.length} records</span></div>
                   <div className="tbl"><table>
-                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>Shift</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th><th>TSC</th><th>AM</th><th>Action</th></tr></thead>
+                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>Shift</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th><th>TSE</th><th>AM</th><th>Action</th></tr></thead>
                     <tbody>
                       {loading?<tr><td colSpan={13} className="empty">Loading...</td></tr>
                       :filteredAtt.length===0?<tr><td colSpan={13} className="empty">No records found</td></tr>
@@ -1195,7 +1196,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <span className="dl-label">Download:</span>
                   <button className="btn bg2 btn-sm" onClick={async()=>{const empId=saleEmp.startsWith("grp:")?"all":saleEmp;const roleF=saleEmp.startsWith("grp:")?saleEmp.replace("grp:",""):"all";await downloadReport("sales_download",{date_from:saleDateFrom,date_to:saleDateTo,employee_id:empId,role_filter:roleF,store_id:saleStore});setTimeout(()=>downloadReport("attendance_download",{date_from:saleDateFrom,date_to:saleDateTo,employee_id:empId,role_filter:roleF,store_id:saleStore}),800);}} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> Sales + Att</button>
                   <button className="btn bp btn-sm" onClick={()=>downloadReport("sales_download",{date_from:saleDateFrom,date_to:saleDateTo})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> All Sales</button>
-                  {(["Brand Ambassador","TSC","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('sales_download',{date_from:saleDateFrom,date_to:saleDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSC"}</button>))}
+                  {(["Brand Ambassador","TSE","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('sales_download',{date_from:saleDateFrom,date_to:saleDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSE"}</button>))}
                 </div>
                 <div className="card">
                   <div className="ch">
@@ -1205,7 +1206,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     </span>
                   </div>
                   <div className="tbl"><table>
-                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>SKUs</th><th>TSC</th><th>AM</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
+                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>SKUs</th><th>TSE</th><th>AM</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
                     <tbody>
                       {loading?<tr><td colSpan={9} className="empty">Loading...</td></tr>
                       :filteredSales.length===0?<tr><td colSpan={9} className="empty">No records found</td></tr>
@@ -1243,7 +1244,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <div className="section-sep">Basic Information</div>
               <div className="fgr" style={{marginBottom:10}}>
                 <div className="fg"><label>Full Name *</label><input style={inp} value={addForm.full_name} onChange={e=>setAddForm({...addForm,full_name:e.target.value})} placeholder="Full name"/></div>
-                <div className="fg"><label>Role *</label><select style={s} value={addForm.role_id} onChange={e=>setAddForm({...addForm,role_id:e.target.value})}><option value="4">Brand Ambassador</option><option value="3">TSC</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
+                <div className="fg"><label>Role *</label><select style={s} value={addForm.role_id} onChange={e=>setAddForm({...addForm,role_id:e.target.value})}><option value="4">Brand Ambassador</option><option value="3">TSE</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
                 <div className="fg"><label>Phone *</label><input style={inp} value={addForm.phone} onChange={e=>setAddForm({...addForm,phone:e.target.value.replace(/\D/g,"").slice(0,11)})} placeholder="03001234567" maxLength={11}/></div>
                 <div className="fg"><label>Email (optional)</label><input style={inp} type="email" value={addForm.email} onChange={e=>setAddForm({...addForm,email:e.target.value})} placeholder="email@example.com"/></div>
                 <div className="fg"><label>Password *</label><input style={inp} type="password" value={addForm.password} onChange={e=>setAddForm({...addForm,password:e.target.value})} placeholder="Min 8 characters"/></div>
@@ -1300,7 +1301,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <div className="fgr">
                 <div className="fg" style={{gridColumn:"span 2"}}><label>Full Name *</label><input style={inp} value={String(showEditEmp.full_name||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,full_name:e.target.value}:p)}/></div>
                 <div className="fg"><label>Phone *</label><input style={inp} value={String(showEditEmp.phone||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,phone:e.target.value.replace(/\D/g,"").slice(0,11)}:p)} placeholder="03001234567" maxLength={11}/></div>
-                <div className="fg"><label className="fl-label">Role</label><select style={s} value={String(showEditEmp.role_id||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,role_id:e.target.value}:p)}><option value="4">Brand Ambassador</option><option value="3">TSC</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
+                <div className="fg"><label className="fl-label">Role</label><select style={s} value={String(showEditEmp.role_id||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,role_id:e.target.value}:p)}><option value="4">Brand Ambassador</option><option value="3">TSE</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
                 <div className="fg" style={{gridColumn:"span 2"}}><label>Email (optional)</label><input style={inp} type="email" value={String(showEditEmp.email||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,email:e.target.value}:p)} placeholder="email@example.com"/></div>
               </div>
               <div className="modal-footer">

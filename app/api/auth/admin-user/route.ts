@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
         u.user_id, u.full_name, u.email, u.is_active, u.phone, u.cnic,
         r.role_name, r.role_id,
         s.store_name, sh.shift_name,
-        tu.full_name AS tsc_name,
+        tu.full_name AS tse_name,
         au.full_name AS am_name,
         ci.city_name
       FROM gm_employees e
@@ -32,9 +32,9 @@ export async function GET(request: NextRequest) {
       LEFT JOIN employee_store_assignments a ON a.employee_id = e.employee_id AND a.is_active = TRUE
       LEFT JOIN stores s ON a.store_id = s.store_id
       LEFT JOIN shifts sh ON a.shift_id = sh.shift_id
-      LEFT JOIN gm_employees te ON a.tsc_employee_id = te.employee_id
+      LEFT JOIN gm_employees te ON a.tse_employee_id = te.employee_id
       LEFT JOIN gm_users tu ON te.user_id = tu.user_id
-      LEFT JOIN am_tsc_assignments ata ON ata.tsc_employee_id = e.employee_id AND ata.is_active = TRUE
+      LEFT JOIN am_tse_assignments ata ON ata.tse_employee_id = e.employee_id AND ata.is_active = TRUE
       LEFT JOIN gm_employees ae ON ata.am_employee_id = ae.employee_id
       LEFT JOIN gm_users au ON ae.user_id = au.user_id
       LEFT JOIN city_am_assignments ca ON ca.am_employee_id = e.employee_id AND ca.is_active = TRUE
@@ -58,8 +58,8 @@ async function cascadeDeleteEmployee(employeeId: number) {
   await query(`DELETE FROM sales_entries WHERE employee_id = $1`, [employeeId])
   await query(`DELETE FROM attendance WHERE employee_id = $1`, [employeeId])
   await query(`DELETE FROM employee_store_assignments WHERE employee_id = $1`, [employeeId])
-  await query(`DELETE FROM tsc_store_assignments WHERE tsc_employee_id = $1`, [employeeId])
-  await query(`DELETE FROM am_tsc_assignments WHERE tsc_employee_id = $1 OR am_employee_id = $1`, [employeeId])
+  await query(`DELETE FROM tse_store_assignments WHERE tse_employee_id = $1`, [employeeId])
+  await query(`DELETE FROM am_tse_assignments WHERE tse_employee_id = $1 OR am_employee_id = $1`, [employeeId])
   await query(`DELETE FROM city_am_assignments WHERE am_employee_id = $1`, [employeeId])
   await query(`DELETE FROM gm_employees WHERE employee_id = $1`, [employeeId])
 }
@@ -173,22 +173,22 @@ export async function POST(request: NextRequest) {
 
     if (action === 'assign_store') {
       await query(`UPDATE employee_store_assignments SET is_active=FALSE, end_date=CURRENT_DATE WHERE employee_id=$1 AND is_active=TRUE`, [body.employee_id])
-      await query(`INSERT INTO employee_store_assignments (employee_id, store_id, shift_id, start_date, is_active, tsc_employee_id) VALUES ($1,$2,$3,CURRENT_DATE,TRUE,$4)`,
-        [body.employee_id, body.store_id, body.shift_id, body.tsc_employee_id || null])
+      await query(`INSERT INTO employee_store_assignments (employee_id, store_id, shift_id, start_date, is_active, tse_employee_id) VALUES ($1,$2,$3,CURRENT_DATE,TRUE,$4)`,
+        [body.employee_id, body.store_id, body.shift_id, body.tse_employee_id || null])
       return NextResponse.json({ success: true, message: 'Store assigned' })
     }
 
-    if (action === 'assign_tsc') {
-      await query(`UPDATE am_tsc_assignments SET is_active=FALSE WHERE tsc_employee_id=$1 AND is_active=TRUE`, [body.tsc_employee_id])
-      await query(`INSERT INTO am_tsc_assignments (am_employee_id, tsc_employee_id, city_id, start_date, is_active) VALUES ($1,$2,$3,CURRENT_DATE,TRUE)`,
-        [body.am_employee_id, body.tsc_employee_id, body.city_id])
-      return NextResponse.json({ success: true, message: 'TSC assigned to AM' })
+    if (action === 'assign_tse') {
+      await query(`UPDATE am_tse_assignments SET is_active=FALSE WHERE tse_employee_id=$1 AND is_active=TRUE`, [body.tse_employee_id])
+      await query(`INSERT INTO am_tse_assignments (am_employee_id, tse_employee_id, city_id, start_date, is_active) VALUES ($1,$2,$3,CURRENT_DATE,TRUE)`,
+        [body.am_employee_id, body.tse_employee_id, body.city_id])
+      return NextResponse.json({ success: true, message: 'TSE assigned to AM' })
     }
 
-    if (action === 'assign_tsc_store') {
-      await query(`INSERT INTO tsc_store_assignments (tsc_employee_id, store_id, start_date, is_active) VALUES ($1,$2,CURRENT_DATE,TRUE) ON CONFLICT DO NOTHING`,
-        [body.tsc_employee_id, body.store_id])
-      return NextResponse.json({ success: true, message: 'Store assigned to TSC' })
+    if (action === 'assign_tse_store') {
+      await query(`INSERT INTO tse_store_assignments (tse_employee_id, store_id, start_date, is_active) VALUES ($1,$2,CURRENT_DATE,TRUE) ON CONFLICT DO NOTHING`,
+        [body.tse_employee_id, body.store_id])
+      return NextResponse.json({ success: true, message: 'Store assigned to TSE' })
     }
 
     if (action === 'remove_assignment') {
@@ -196,9 +196,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, message: 'Assignment removed' })
     }
 
-    if (action === 'remove_tsc_am') {
-      await query(`UPDATE am_tsc_assignments SET is_active=FALSE, end_date=CURRENT_DATE WHERE tsc_employee_id=$1 AND is_active=TRUE`, [body.tsc_employee_id])
-      return NextResponse.json({ success: true, message: 'TSC removed from AM' })
+    if (action === 'remove_tse_am') {
+      await query(`UPDATE am_tse_assignments SET is_active=FALSE, end_date=CURRENT_DATE WHERE tse_employee_id=$1 AND is_active=TRUE`, [body.tse_employee_id])
+      return NextResponse.json({ success: true, message: 'TSE removed from AM' })
     }
 
     if (action === 'assign_am_city') {
