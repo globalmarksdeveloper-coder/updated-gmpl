@@ -1709,18 +1709,22 @@ if (data.assignment) {
               <InlineTargetBar />
 
               {/* ── LEAVE & RESIGNATION BUTTONS ── */}
-              <div style={{ display:"flex", gap:8, width:"100%" }}>
-                <button onClick={() => setShowLeaveModal(true)}
-                  style={{ flex:1, padding:"9px 0", borderRadius:10, border:"1.5px solid #BFDBFE", background:"#EFF6FF", color:"#0B4F77", fontSize:11, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:5 }}>
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>
-                  Apply Leave
-                </button>
-                <button onClick={() => setShowResignModal(true)}
-                  style={{ flex:1, padding:"9px 0", borderRadius:10, border:"1.5px solid #FCA5A5", background:"#FEF2F2", color:"#DC2626", fontSize:11, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:5 }}>
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/></svg>
-                  Resign
-                </button>
-              </div>
+<div style={{ display:"flex", gap:8, width:"100%", justifyContent:"center" }}>
+  <button onClick={() => setShowLeaveModal(true)}
+    onMouseEnter={e => (e.currentTarget.style.background = "#073D5F")}
+    onMouseLeave={e => (e.currentTarget.style.background = "#0B4F77")}
+    style={{ padding:"8px 20px", borderRadius:5, border:"none", background:"#0B4F77", color:"#fff", fontSize:11, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:5, whiteSpace:"nowrap", transition:"background 0.15s" }}>
+    <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>
+    Apply Leave
+  </button>
+  <button onClick={() => setShowResignModal(true)}
+    onMouseEnter={e => (e.currentTarget.style.background = "#af1c1c")}
+    onMouseLeave={e => (e.currentTarget.style.background = "#a32626")}
+    style={{ padding:"8px 20px", borderRadius:5, border:"none", background:"#c93131", color:"#fff", fontSize:11, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:5, whiteSpace:"nowrap", transition:"background 0.15s" }}>
+    <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/></svg>
+    Resign
+  </button>
+</div>
 
               {/* ── ATTENDANCE TIMELINE ── */}
               {attendance && (

@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Logo from "@/public/gmpl-logo/gmpl-favicon.svg";
-const TABS = ["overview","employees","assignments","stores","prices","attendance","sales"];
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+const TABS = ["overview","employees","assignments","stores","prices","attendance","sales","agreements"];
 
 const IcoOverview = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>;
 const IcoEmployees = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>;
@@ -12,13 +13,14 @@ const IcoPrices = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="cu
 const IcoAttend = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/></svg>;
 const IcoStore = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>;
 const IcoSales = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd"/></svg>;
+const IcoAgreements = () => <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/></svg>;
 const IcoSearch = () => <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg>;
 const IcoCsv = () => <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd"/></svg>;
 const IcoEdit = () => <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>;
 const IcoDelete = () => <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"/></svg>;
 
-const TAB_ICONS: Record<string, React.ReactElement> = { overview:<IcoOverview/>, employees:<IcoEmployees/>, assignments:<IcoAssign/>, stores:<IcoStore/>, prices:<IcoPrices/>, attendance:<IcoAttend/>, sales:<IcoSales/> };
-const TAB_LABELS: Record<string, string> = { overview:"Overview", employees:"Employees", assignments:"Assignments", stores:"Stores", prices:"Prices", attendance:"Attendance", sales:"Sales" };
+const TAB_ICONS: Record<string, React.ReactElement> = { overview:<IcoOverview/>, employees:<IcoEmployees/>, assignments:<IcoAssign/>, stores:<IcoStore/>, prices:<IcoPrices/>, attendance:<IcoAttend/>, sales:<IcoSales/>, agreements:<IcoAgreements/> };
+const TAB_LABELS: Record<string, string> = { overview:"Overview", employees:"Employees", assignments:"Assignments", stores:"Stores", prices:"Prices", attendance:"Attendance", sales:"Sales", agreements:"Agreements" };
 
 // ─── Employee Detail Modal ───────────────────────────────────────────────────
 type DetailModalData = {
@@ -98,7 +100,7 @@ function EmployeeDetailModal({
             <div style={{display:"flex",gap:14,marginTop:8,flexWrap:"wrap"}}>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>Total Sales</div><div style={{fontSize:15,fontWeight:800,color:"#10B981"}}>Rs {grandTotal.toLocaleString()}</div></div>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>Days Present</div><div style={{fontSize:15,fontWeight:800,color:"#60A5FA"}}>{daysPresent}</div></div>
-              <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>TSE</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.tse_name||"—"}</div></div>
+              <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>TSC</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.tsc_name||"—"}</div></div>
               <div><div style={{fontSize:9,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",marginBottom:2}}>AM</div><div style={{fontSize:12,fontWeight:600,color:"#fff"}}>{emp.am_name||"—"}</div></div>
             </div>
           </div>
@@ -231,6 +233,7 @@ export default function AdminDashboard() {
   const [attRows, setAttRows] = useState<Record<string, any>[]>([]);
   const [salesRows, setSalesRows] = useState<Record<string, any>[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [agreements, setAgreements] = useState<Record<string,any>[]>([]);
   const [toast, setToast] = useState<{ text:string, err:boolean, undo:(() => void) | null }>({ text:"", err:false, undo:null });
   const [undoTimer, setUndoTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
   const [empSearch, setEmpSearch] = useState<string>("");
@@ -248,10 +251,14 @@ export default function AdminDashboard() {
   const [saleBrand, setSaleBrand] = useState<string>("all");
   const [saleSearch, setSaleSearch] = useState<string>("");
   const [priceBrand, setPriceBrand] = useState<string>("all");
-  const [topPerformers, setTopPerformers] = useState<{topBAs:Record<string,any>[],topTSEs:Record<string,any>[],topAMs:Record<string,any>[]}>({topBAs:[],topTSEs:[],topAMs:[]});
+  const [topPerformers, setTopPerformers] = useState<{topBAs:Record<string,any>[],topTSCs:Record<string,any>[],topAMs:Record<string,any>[]}>({topBAs:[],topTSCs:[],topAMs:[]});
   const [topPeriod, setTopPeriod] = useState<string>("month");
   const [selectedPerformer, setSelectedPerformer] = useState<Record<string,any>|null>(null);
   const [priceSearch, setPriceSearch] = useState<string>("");
+  const [pricingStore,    setPricingStore]    = useState<string>("");
+  const [storePricing,    setStorePricing]    = useState<Record<string,any>[]>([]);
+  const [spForm,          setSpForm]          = useState<Record<string,any>>({});
+  const [spSaving,        setSpSaving]        = useState<number|null>(null);
   const [showAddEmp, setShowAddEmp] = useState<boolean>(false);
   const [addForm, setAddForm] = useState<Record<string, string>>({ full_name:"", email:"", password:"", role_id:"4", phone:"", store_id:"", shift_id:"", cnic:"", father_name:"", address:"", bank_name:"", bank_account:"", iban:"" });
   const [showModal, setShowModal] = useState<{ type: string; mode: string; [key: string]: unknown } | null>(null);
@@ -273,6 +280,7 @@ export default function AdminDashboard() {
   useEffect(() => { if(tab==="attendance") fetchAtt(); }, [tab,attDateFrom,attDateTo,attRole,attEmp,attStore]);
   useEffect(() => { if(tab==="sales") fetchSales(); }, [tab,saleDateFrom,saleDateTo,saleEmp,saleStore]);
   useEffect(() => { if(tab==="prices") fetchCatalog(); }, [tab]);
+  useEffect(() => { if(tab==="agreements") fetchAgreements(); }, [tab]);
 
   const showToast = (text: string, err: boolean = false, undoFn: (() => void) | null = null) => {
     if (undoTimer) clearTimeout(undoTimer);
@@ -303,8 +311,34 @@ export default function AdminDashboard() {
   const fetchTopPerformers = async (period: string = "month") => {
     try {
       const d = await fetch(`/api/auth/topperformers?period=${period}&limit=10`).then(r=>r.json());
-setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAMs||[] });
+      setTopPerformers({ topBAs: d.topBAs||[], topTSCs: d.topTSCs||[], topAMs: d.topAMs||[] });
     } catch (_e: unknown) {}
+  };
+
+  const fetchAgreements = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/admin-user?type=agreements");
+      const d = await res.json();
+      setAgreements(d.agreements || []);
+    } catch (_e: unknown) {}
+    setLoading(false);
+  };
+
+  const fetchStorePricing = async (storeId: string) => {
+    if (!storeId) { setStorePricing([]); return; }
+    try {
+      const res = await fetch(`/api/auth/admin-catalog?store_id=${storeId}`);
+      const d = await res.json();
+      setStorePricing(d.storePricing || []);
+      const form: Record<string,any> = {};
+      (d.storePricing||[]).forEach((sp: Record<string,any>) => {
+        // form[sp.sku_id] = { pct_to_mrp: sp.pct_to_mrp, mrp_inc_gst: sp.mrp_inc_gst };
+
+        form[sp.sku_id] = { pct_to_mrp: sp.pct_to_mrp, pct_to_trade: sp.pct_to_trade, mrp_inc_gst: sp.mrp_inc_gst };
+      });
+      setSpForm(form);
+    } catch {}
   };
 
   const fetchCatalog = async () => {
@@ -408,7 +442,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
       try {
         const lat = (showModal.latitude as string) || "";
         const lng = (showModal.longitude as string) || "";
-       const res = await fetch("/api/auth/admin-user", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"add_store", store_name:name, city_id: showModal.city_id ? parseInt(String(showModal.city_id)) : null, latitude: lat ? parseFloat(lat) : null, longitude: lng ? parseFloat(lng) : null, address:(showModal.address as string)||"" }) });
+        const res = await fetch("/api/auth/admin-user", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ action:"add_store", store_name:name, city_id: (showModal.city_id as number)||null, latitude: lat ? parseFloat(lat) : null, longitude: lng ? parseFloat(lng) : null, address:(showModal.address as string)||"" }) });
         const data = await res.json();
         if (res.ok) { showToast("Store added!"); setShowModal(null); fetchAll(); }
         else showToast(data.message || "Error", true);
@@ -437,16 +471,16 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
   const inp = {padding:"8px 12px",border:"1.5px solid #E2E8F0",borderRadius:8,fontSize:13,outline:"none",width:"100%"};
 
   const baList  = employees.filter(e=>e.role_name==="Brand Ambassador");
-  const tseList = employees.filter(e=>e.role_name==="TSE/TSO");
+  const tscList = employees.filter(e=>e.role_name==="TSC");
   const amList  = employees.filter(e=>e.role_name==="Area Manager");
 
   const filteredEmps = employees.filter(e=>{
-    const matchRole = empRoleFilter==="all" || e.role_name===(empRoleFilter==="BA"?"Brand Ambassador":empRoleFilter==="TSE"?"TSE/TSO":empRoleFilter==="AM"?"Area Manager":"Admin");
+    const matchRole = empRoleFilter==="all" || e.role_name===(empRoleFilter==="BA"?"Brand Ambassador":empRoleFilter==="TSC"?"TSC":empRoleFilter==="AM"?"Area Manager":"Admin");
     const matchSearch = !empSearch || 
       e.full_name?.toLowerCase().includes(empSearch.toLowerCase()) || 
       e.email?.toLowerCase().includes(empSearch.toLowerCase()) || 
       e.employee_code?.toLowerCase().includes(empSearch.toLowerCase()) ||
-      e.cnic?.replace(/[-\s]/g, "").includes(empSearch.replace(/[-\s]/g, "")) ||
+      e.cnic?.includes(empSearch.replace(/[-\s]/g, "")) ||
       e.phone?.includes(empSearch.replace(/[\s-]/g, ""));
     return matchRole && matchSearch;
   });
@@ -504,7 +538,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
         /* ── TOPBAR ── */
         .topbar{background:#0F172A;display:flex;align-items:center;padding:0 16px;height:52px;position:sticky;top:0;z-index:100;gap:8px}
         .topbar-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;overflow:hidden}
-        .logo-avatar{width:28px;height:28px;border-radius:7px;padding:5px;border-radius:50px;background: #fff;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:10px;color:#fff;flex-shrink:0}
+        .logo-avatar{width:28px;height:28px;padding:5px;border-radius:50px;background: #fff;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:10px;color:#fff;flex-shrink:0}
         .logo-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
         .logo-sub{font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap}
         .topbar-clock{font-family:'Poppins',sans-serif;font-size:14px;font-weight:800;color:#10B981;flex-shrink:0;padding:0 8px}
@@ -731,7 +765,9 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
       <div className="root">
         <div className="topbar">
           <div className="topbar-left">
-            <div className="logo-avatar"><Image src={Logo} alt="TrackForce Logo" width={250} height={50} /></div>
+            <div className="logo-avatar">
+              <Image src={Logo} alt="TrackForce Logo" width={250} height={50} />
+            </div>
             <div className="topbar-left-text">
               <div className="logo-name">GMPL — Admin Dashboard</div>
               <div className="logo-sub">Super Admin · Full Access</div>
@@ -784,11 +820,11 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     </div>
                   </div>
                   <div className="sc" style={{borderTopColor:"#0F766E"}}>
-                    <div className="sc-label">TSEs/TSOs</div>
-                    <div className="sc-row" style={{alignItems:"baseline",gap:6,marginTop:2}}><div className="sv" style={{color:"#0F766E"}}>{overview?.stats?.total_tses||0}</div><div className="sc-sub">Total</div></div>
+                    <div className="sc-label">TSCs</div>
+                    <div className="sc-row" style={{alignItems:"baseline",gap:6,marginTop:2}}><div className="sv" style={{color:"#0F766E"}}>{overview?.stats?.total_tscs||0}</div><div className="sc-sub">Total</div></div>
                     <div style={{display:"flex",gap:8,marginTop:5}}>
-                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#10B981"}}/><span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>{overview?.stats?.present_tses||0}</span><span style={{fontSize:10,color:"#94A3B8"}}>Present</span></div>
-                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#EF4444"}}/><span style={{fontSize:11,fontWeight:700,color:"#EF4444"}}>{(overview?.stats?.total_tses||0)-(overview?.stats?.present_tses||0)}</span><span style={{fontSize:10,color:"#94A3B8"}}>Absent</span></div>
+                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#10B981"}}/><span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>{overview?.stats?.present_tscs||0}</span><span style={{fontSize:10,color:"#94A3B8"}}>Present</span></div>
+                      <div style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:"#EF4444"}}/><span style={{fontSize:11,fontWeight:700,color:"#EF4444"}}>{(overview?.stats?.total_tscs||0)-(overview?.stats?.present_tscs||0)}</span><span style={{fontSize:10,color:"#94A3B8"}}>Absent</span></div>
                     </div>
                   </div>
                   <div className="sc" style={{borderTopColor:"#10B981"}}>
@@ -832,12 +868,12 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <div className="card" style={{marginBottom:10}}>
                     <div className="ch"><div className="ct">🏆 Top Brand Ambassadors — Sales</div></div>
                     <div className="tbl"><table>
-                      <thead><tr><th>#</th><th>Name</th><th>Code</th><th>Store</th><th>TSE</th><th>Days Present</th><th>Entries</th><th>Units</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
+                      <thead><tr><th>#</th><th>Name</th><th>Code</th><th>Store</th><th>TSC</th><th>Days Present</th><th>Entries</th><th>Units</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
                       <tbody>{topPerformers.topBAs.length===0?<tr><td colSpan={9} className="empty">No sales data for this period</td></tr>:topPerformers.topBAs.map((ba,i)=>(
                         <tr key={ba.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...ba,role:"Brand Ambassador"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
                           <td className="td-name">{ba.full_name}</td><td style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{ba.employee_code}</td>
-                          <td className="td-sm">{ba.store_name||"—"}</td><td className="td-sm">{ba.tse_name||"—"}</td>
+                          <td className="td-sm">{ba.store_name||"—"}</td><td className="td-sm">{ba.tsc_name||"—"}</td>
                           <td className="tr-center"><span className="b bg">{ba.days_present}</span></td>
                           <td className="tr-center">{ba.sales_entries}</td><td className="tr-center">{ba.total_units}</td>
                           <td style={{textAlign:"right",fontWeight:800,color:"#10B981",fontFamily:"Poppins,sans-serif"}}>Rs {Number(ba.total_sales).toLocaleString()}</td>
@@ -846,10 +882,10 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     </table></div>
                   </div>
                   <div className="two-col">
-                    <div className="card"><div className="ch"><div className="ct">⭐ Top TSEs — Team Sales</div></div>
+                    <div className="card"><div className="ch"><div className="ct">⭐ Top TSCs — Team Sales</div></div>
                       <div className="tbl"><table><thead><tr><th>#</th><th>Name</th><th>City</th><th>BAs</th><th style={{textAlign:"right"}}>Team Sales</th></tr></thead>
-                      <tbody>{topPerformers.topTSEs.length===0?<tr><td colSpan={5} className="empty">No data</td></tr>:topPerformers.topTSEs.map((t,i)=>(
-                        <tr key={t.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...t,role:"TSE"})}>
+                      <tbody>{topPerformers.topTSCs.length===0?<tr><td colSpan={5} className="empty">No data</td></tr>:topPerformers.topTSCs.map((t,i)=>(
+                        <tr key={t.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...t,role:"TSC"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
                           <td className="td-name">{t.full_name}</td><td className="td-sm">{t.city_name||"—"}</td>
                           <td className="tr-center"><span className="b bbl">{t.ba_count}</span></td>
@@ -858,12 +894,12 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                       ))}</tbody></table></div>
                     </div>
                     <div className="card"><div className="ch"><div className="ct">🥇 Top Area Managers</div></div>
-                      <div className="tbl"><table><thead><tr><th>#</th><th>Name</th><th>City</th><th>TSEs/TSOs</th><th>BAs</th><th style={{textAlign:"right"}}>Territory Sales</th></tr></thead>
+                      <div className="tbl"><table><thead><tr><th>#</th><th>Name</th><th>City</th><th>TSCs</th><th>BAs</th><th style={{textAlign:"right"}}>Territory Sales</th></tr></thead>
                       <tbody>{topPerformers.topAMs.length===0?<tr><td colSpan={6} className="empty">No data</td></tr>:topPerformers.topAMs.map((a,i)=>(
                         <tr key={a.employee_id} style={{cursor:"pointer"}} onClick={()=>setSelectedPerformer({...a,role:"Area Manager"})}>
                           <td><span style={{width:22,height:22,borderRadius:"50%",background:i===0?"#F59E0B":i===1?"#94A3B8":i===2?"#CD7C2F":"#E2E8F0",color:i<3?"#fff":"#64748B",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800}}>{i+1}</span></td>
                           <td className="td-name">{a.full_name}</td><td className="td-sm">{a.city_name||"—"}</td>
-                          <td className="tr-center">{a.tse_count}</td><td className="tr-center">{a.ba_count}</td>
+                          <td className="tr-center">{a.tsc_count}</td><td className="tr-center">{a.ba_count}</td>
                           <td style={{textAlign:"right",fontWeight:800,color:"#10B981",fontFamily:"Poppins,sans-serif"}}>Rs {Number(a.total_sales).toLocaleString()}</td>
                         </tr>
                       ))}</tbody></table></div>
@@ -899,13 +935,13 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     <div style={{display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
                       <div className="sw" style={{width:220}}><span className="si"><IcoSearch/></span><input placeholder="Name, CNIC, phone, code..." value={empSearch} onChange={e=>setEmpSearch(e.target.value)} /></div>
                       <select value={empRoleFilter} onChange={e=>setEmpRoleFilter(e.target.value)} style={{...s,width:110}}>
-                        <option value="all">All Roles</option><option value="BA">BA Only</option><option value="TSE/TSO">TSE/TSO Only</option><option value="AM">AM Only</option><option value="Admin">Admin Only</option>
+                        <option value="all">All Roles</option><option value="BA">BA Only</option><option value="TSC">TSC Only</option><option value="AM">AM Only</option><option value="Admin">Admin Only</option>
                       </select>
                       <button className="btn bp" onClick={()=>setShowAddEmp(true)}>+ Add Employee</button>
                     </div>
                   </div>
                   <div className="tbl"><table>
-                    <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>CNIC / ID</th><th>Role</th><th>Store</th><th>Shift</th><th>TSE</th><th>AM/City</th><th>Status</th><th>Action</th></tr></thead>
+                    <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>CNIC / ID</th><th>Role</th><th>Store</th><th>Shift</th><th>TSC</th><th>AM/City</th><th>Status</th><th>Action</th></tr></thead>
                     <tbody>
                       {filteredEmps.length===0?<tr><td colSpan={11} className="empty">No employees found</td></tr>
                       :filteredEmps.map((e: Record<string,any>,i: number)=>(
@@ -916,7 +952,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                           <td style={{fontSize:10,fontFamily:"monospace",color:"#64748B"}}>{e.cnic||"—"}</td>
                           <td><span className="b bgr">{e.role_name}</span></td>
                           <td className="td-sm">{e.store_name||"—"}</td><td className="td-sm">{e.shift_name||"—"}</td>
-                          <td className="td-sm">{e.tse_name||"—"}</td><td className="td-sm">{e.am_name||e.city_name||"—"}</td>
+                          <td className="td-sm">{e.tsc_name||"—"}</td><td className="td-sm">{e.am_name||e.city_name||"—"}</td>
                           <td><span className={`b ${e.is_active?"bg":"br"}`}>{e.is_active?"Active":"Inactive"}</span></td>
                           <td>
                             <select value="" onChange={(ev)=>{const v=ev.target.value;ev.currentTarget.value="";
@@ -948,7 +984,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                       <div className="emp-card-info">
                         {e.store_name&&<span className="b bg" style={{fontSize:10}}>Store: {e.store_name}</span>}
                         {e.shift_name&&<span className="b bgr" style={{fontSize:10}}>{e.shift_name}</span>}
-                        {e.tse_name&&<span style={{fontSize:10,color:"#64748B"}}>TSE: {e.tse_name}</span>}
+                        {e.tsc_name&&<span style={{fontSize:10,color:"#64748B"}}>TSC: {e.tsc_name}</span>}
                         {(e.am_name||e.city_name)&&<span style={{fontSize:10,color:"#64748B"}}>AM: {e.am_name||e.city_name}</span>}
                       </div>
                       <div className="emp-card-action">
@@ -974,18 +1010,18 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <>
                 <div className="section-title">Manage Assignments</div>
                 <div className="card" style={{marginBottom:12}}>
-                  <div className="ch"><div className="ct">Brand Ambassadors — Store / Shift / TSE</div></div>
+                  <div className="ch"><div className="ct">Brand Ambassadors — Store / Shift / TSC</div></div>
                   <div className="tbl"><table style={{width:"100%"}}>
-                    <thead><tr><th>Employee</th><th>Current</th><th>New Store</th><th>New Shift</th><th>New TSE</th><th style={{width:140}}>Actions</th></tr></thead>
+                    <thead><tr><th>Employee</th><th>Current</th><th>New Store</th><th>New Shift</th><th>New TSC</th><th style={{width:140}}>Actions</th></tr></thead>
                     <tbody>{baList.length===0?<tr><td colSpan={6} className="empty">No Brand Ambassadors</td></tr>:baList.map((ba: Record<string,any>)=>(
                       <tr key={ba.employee_id}>
                         <td><div className="assign-name">{ba.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{ba.employee_code}</div></td>
-                        <td><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{ba.store_name?<span className="b bg">{ba.store_name}</span>:<span className="b br">No Store</span>}{ba.shift_name&&<span className="b bgr">{ba.shift_name}</span>}{ba.tse_name&&<span style={{fontSize:10,color:"#64748B"}}>{ba.tse_name}</span>}</div></td>
+                        <td><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{ba.store_name?<span className="b bg">{ba.store_name}</span>:<span className="b br">No Store</span>}{ba.shift_name&&<span className="b bgr">{ba.shift_name}</span>}{ba.tsc_name&&<span style={{fontSize:10,color:"#64748B"}}>{ba.tsc_name}</span>}</div></td>
                         <td><select id={`bs-${ba.employee_id}`} style={s}><option value="">Select Store</option>{stores.map(st=><option key={`st-${st.store_id}`} value={st.store_id}>{st.store_name}</option>)}</select></td>
                         <td><select id={`bsh-${ba.employee_id}`} style={s}><option value="">Select Shift</option>{shifts.map(sh=><option key={`sh-${sh.shift_id}`} value={sh.shift_id}>{sh.shift_name}</option>)}</select></td>
-                        <td><select id={`bt-${ba.employee_id}`} style={s}><option value="">Select TSE/TSO</option>{tseList.map(t=><option key={t.employee_id} value={t.employee_id}>{t.full_name}</option>)}</select></td>
+                        <td><select id={`bt-${ba.employee_id}`} style={s}><option value="">Select TSC</option>{tscList.map(t=><option key={t.employee_id} value={t.employee_id}>{t.full_name}</option>)}</select></td>
                         <td><div style={{display:"flex",gap:5}}>
-                          <button className="btn bp btn-sm" onClick={()=>{const store=(document.getElementById(`bs-${ba.employee_id}`) as HTMLSelectElement).value;const shift=(document.getElementById(`bsh-${ba.employee_id}`) as HTMLSelectElement).value;const tse=(document.getElementById(`bt-${ba.employee_id}`) as HTMLSelectElement).value;if(!store||!shift){showToast("Select store & shift",true);return;}doAction("/api/auth/admin-user","assign_store",{employee_id:ba.employee_id,store_id:store,shift_id:shift,tse_employee_id:tse||null});}}>Assign</button>
+                          <button className="btn bp btn-sm" onClick={()=>{const store=(document.getElementById(`bs-${ba.employee_id}`) as HTMLSelectElement).value;const shift=(document.getElementById(`bsh-${ba.employee_id}`) as HTMLSelectElement).value;const tsc=(document.getElementById(`bt-${ba.employee_id}`) as HTMLSelectElement).value;if(!store||!shift){showToast("Select store & shift",true);return;}doAction("/api/auth/admin-user","assign_store",{employee_id:ba.employee_id,store_id:store,shift_id:shift,tsc_employee_id:tsc||null});}}>Assign</button>
                           {ba.store_name&&<button className="btn brd btn-sm" onClick={()=>doDelete(`${ba.full_name} assignment`,"remove_assignment",{employee_id:ba.employee_id})}>Remove</button>}
                         </div></td>
                       </tr>
@@ -993,20 +1029,20 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   </table></div>
                 </div>
                 <div className="card" style={{marginBottom:12}}>
-                  <div className="ch"><div className="ct">TSE — AM & Store Assignment</div></div>
+                  <div className="ch"><div className="ct">TSC — AM & Store Assignment</div></div>
                   <div className="tbl"><table style={{width:"100%"}}>
                     <thead><tr><th>Employee</th><th>Current AM</th><th>Assign AM</th><th>City</th><th>Assign Store</th><th style={{width:160}}>Actions</th></tr></thead>
-                    <tbody>{tseList.length===0?<tr><td colSpan={6} className="empty">No TSEs/TSOs</td></tr>:tseList.map((tse: Record<string,any>)=>(
-                      <tr key={tse.employee_id}>
-                        <td><div className="assign-name">{tse.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{tse.employee_code}</div></td>
-                        <td>{tse.am_name?<span className="b bg">{tse.am_name}</span>:<span className="b br">None</span>}</td>
-                        <td><select id={`ta-${tse.employee_id}`} style={s}><option value="">Select AM</option>{amList.map(a=><option key={a.employee_id} value={a.employee_id}>{a.full_name}</option>)}</select></td>
-                        <td><select id={`tc-${tse.employee_id}`} style={s}><option value="">Select City</option>{cities.map(c=><option key={`c-${c.city_id}`} value={c.city_id}>{c.city_name}</option>)}</select></td>
-                        <td><select id={`ts-${tse.employee_id}`} style={s}><option value="">Select Store</option>{stores.map(st=><option key={`st-${st.store_id}`} value={st.store_id}>{st.store_name}</option>)}</select></td>
+                    <tbody>{tscList.length===0?<tr><td colSpan={6} className="empty">No TSCs</td></tr>:tscList.map((tsc: Record<string,any>)=>(
+                      <tr key={tsc.employee_id}>
+                        <td><div className="assign-name">{tsc.full_name}</div><div style={{fontSize:10,color:"#94A3B8",fontFamily:"monospace"}}>{tsc.employee_code}</div></td>
+                        <td>{tsc.am_name?<span className="b bg">{tsc.am_name}</span>:<span className="b br">None</span>}</td>
+                        <td><select id={`ta-${tsc.employee_id}`} style={s}><option value="">Select AM</option>{amList.map(a=><option key={a.employee_id} value={a.employee_id}>{a.full_name}</option>)}</select></td>
+                        <td><select id={`tc-${tsc.employee_id}`} style={s}><option value="">Select City</option>{cities.map(c=><option key={`c-${c.city_id}`} value={c.city_id}>{c.city_name}</option>)}</select></td>
+                        <td><select id={`ts-${tsc.employee_id}`} style={s}><option value="">Select Store</option>{stores.map(st=><option key={`st-${st.store_id}`} value={st.store_id}>{st.store_name}</option>)}</select></td>
                         <td><div style={{display:"flex",gap:5}}>
-                          <button className="btn bp btn-sm" onClick={()=>{const a=(document.getElementById(`ta-${tse.employee_id}`) as HTMLSelectElement).value;const c=(document.getElementById(`tc-${tse.employee_id}`) as HTMLSelectElement).value;if(!a||!c){showToast("Select AM & city",true);return;}doAction("/api/auth/admin-user","assign_tse",{tse_employee_id:tse.employee_id,am_employee_id:a,city_id:c});}}>AM</button>
-                          <button className="btn bg2 btn-sm" onClick={()=>{const st=(document.getElementById(`ts-${tse.employee_id}`) as HTMLSelectElement).value;if(!st){showToast("Select store",true);return;}doAction("/api/auth/admin-user","assign_tse_store",{tse_employee_id:tse.employee_id,store_id:st});}}>Store</button>
-                          {tse.am_name&&<button className="btn brd btn-sm" onClick={()=>doDelete(`${tse.full_name} AM assignment`,"remove_tse_am",{tse_employee_id:tse.employee_id})}>Remove</button>}
+                          <button className="btn bp btn-sm" onClick={()=>{const a=(document.getElementById(`ta-${tsc.employee_id}`) as HTMLSelectElement).value;const c=(document.getElementById(`tc-${tsc.employee_id}`) as HTMLSelectElement).value;if(!a||!c){showToast("Select AM & city",true);return;}doAction("/api/auth/admin-user","assign_tsc",{tsc_employee_id:tsc.employee_id,am_employee_id:a,city_id:c});}}>AM</button>
+                          <button className="btn bg2 btn-sm" onClick={()=>{const st=(document.getElementById(`ts-${tsc.employee_id}`) as HTMLSelectElement).value;if(!st){showToast("Select store",true);return;}doAction("/api/auth/admin-user","assign_tsc_store",{tsc_employee_id:tsc.employee_id,store_id:st});}}>Store</button>
+                          {tsc.am_name&&<button className="btn brd btn-sm" onClick={()=>doDelete(`${tsc.full_name} AM assignment`,"remove_tsc_am",{tsc_employee_id:tsc.employee_id})}>Remove</button>}
                         </div></td>
                       </tr>
                     ))}</tbody>
@@ -1037,7 +1073,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <>
                 <div className="top-header-row" style={{marginBottom:12}}>
                   <div className="section-title" style={{marginBottom:0}}>Store Locations</div>
-                  <button className="btn bp" onClick={()=>setShowModal({type:"store",mode:"add",city_id:cities[0]?.city_id||""})}>+ Add Store</button>
+                  <button className="btn bp" onClick={()=>setShowModal({type:"store",mode:"add"})}>+ Add Store</button>
                 </div>
                 <div className="card">
                   <div className="ch"><div className="ct">Store GPS Coordinates</div><div style={{fontSize:11,color:"#64748B"}}>Used for geofence check-in validation (200m radius)</div></div>
@@ -1062,39 +1098,124 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
             )}
 
             {/* PRICES */}
+            {/* {tab==="prices"&&(
+              <>
+            
+                
+                <div className="card" style={{marginTop:12}}>
+                  <div className="ch">
+                    <div className="ct">Store Pricing</div>
+                    <select value={pricingStore} onChange={e=>{setPricingStore(e.target.value);fetchStorePricing(e.target.value);}} style={{...s,width:180}}>
+                      <option value="">-- Select Store --</option>
+                      {stores.map((st:Record<string,any>)=>(
+                        <option key={st.store_id} value={st.store_id}>{st.store_name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {pricingStore && (
+                    <div className="tbl"><table>
+                      <thead><tr><th>Brand</th><th>Category</th><th>SKU</th><th>MRP Inc GST</th><th>% to MRP</th><th>Trade Price</th><th>Invoice Price</th><th>Action</th></tr></thead>
+                      <tbody>
+                        {catalog.skus.map((sk:Record<string,any>)=>{
+                          const existing = storePricing.find(sp=>sp.sku_id===sk.sku_id);
+                          const form = spForm[sk.sku_id] || {};
+                          const pct = parseFloat(form.pct_to_mrp||0)/100;
+                          const mrp = parseFloat(form.mrp_inc_gst||sk.retail_price||0);
+                          const trade = mrp-(mrp*pct);
+                          const invoice = trade-(trade*pct);
+                          return (
+                            <tr key={sk.sku_id}>
+                              <td><span className="b bbl">{sk.brand_name}</span></td>
+                              <td style={{fontSize:11,color:"#64748B"}}>{sk.category_name}</td>
+                              <td className="td-name">{sk.sku_name}</td>
+                              <td><input type="number" value={form.mrp_inc_gst||""} placeholder={sk.retail_price} onChange={e=>setSpForm(prev=>({...prev,[sk.sku_id]:{...prev[sk.sku_id],mrp_inc_gst:e.target.value}}))} style={{width:80,padding:"3px 6px",border:"1px solid #E2E8F0",borderRadius:6,fontSize:12}}/></td>
+                              <td><div style={{display:"flex",alignItems:"center",gap:4}}><input type="number" value={form.pct_to_mrp||""} placeholder="e.g. 16.51" onChange={e=>setSpForm(prev=>({...prev,[sk.sku_id]:{...prev[sk.sku_id],pct_to_mrp:e.target.value}}))} style={{width:80,padding:"3px 6px",border:"1px solid #E2E8F0",borderRadius:6,fontSize:12}}/><span style={{fontSize:10,color:"#94A3B8"}}>%</span></div></td>
+                              <td style={{fontWeight:600,color:"#1E3A8A",fontSize:12}}>{form.pct_to_mrp&&form.mrp_inc_gst?`Rs ${trade.toFixed(2)}`:"—"}</td>
+                              <td style={{fontWeight:600,color:"#10B981",fontSize:12}}>{form.pct_to_mrp&&form.mrp_inc_gst?`Rs ${invoice.toFixed(2)}`:"—"}</td>
+                              <td><button className="btn bp btn-sm" disabled={spSaving===sk.sku_id||!form.pct_to_mrp||!form.mrp_inc_gst} onClick={async()=>{
+                                setSpSaving(sk.sku_id);
+                                await fetch("/api/auth/admin-catalog",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"save_store_pricing",store_id:pricingStore,sku_id:sk.sku_id,pct_to_mrp:form.pct_to_mrp,mrp_inc_gst:form.mrp_inc_gst})});
+                                showToast("Pricing saved!");
+                                fetchStorePricing(pricingStore);
+                                setSpSaving(null);
+                              }}>{spSaving===sk.sku_id?"...":"Save"}</button></td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table></div>
+                  )}
+                  {!pricingStore && <div className="empty">Select a store to manage pricing</div>}
+                </div>
+              </>
+            )} */}
+
+            {/* PRICES */}
             {tab==="prices"&&(
               <>
-                <div className="card" style={{marginBottom:12}}>
-                  <div className="ch"><div className="ct">Brands ({catalog.brands.length})</div><button className="btn bp" onClick={()=>{setShowModal({type:"brand",mode:"add"});setModalForm({});}}>+ Add Brand</button></div>
-                  <div className="tbl"><table><thead><tr><th>Brand Name</th><th>Categories</th><th>SKUs</th><th>Actions</th></tr></thead>
-                  <tbody>{catalog.brands.map((br: Record<string,any>)=>(<tr key={br.brand_id}><td className="td-name">{br.brand_name}</td><td>{catalog.categories.filter(c=>c.brand_id===br.brand_id).length}</td><td>{catalog.skus.filter(sk=>sk.brand_id===br.brand_id).length}</td><td style={{display:"flex",gap:4}}><button className="btn bya btn-sm" onClick={()=>{setShowModal({type:"brand",mode:"edit"});setModalForm({brand_id:br.brand_id,brand_name:br.brand_name});}}><IcoEdit/> Edit</button><button className="btn brd btn-sm" onClick={()=>{if(confirm(`Delete brand "${br.brand_name}"?`))doDelete(`Brand ${br.brand_name}`,"delete_brand",{brand_id:br.brand_id},true);}}><IcoDelete/> Delete</button></td></tr>))}</tbody>
-                  </table></div>
-                </div>
-                <div className="card" style={{marginBottom:12}}>
-                  <div className="ch"><div className="ct">Categories ({catalog.categories.length})</div><button className="btn bp" onClick={()=>{setShowModal({type:"category",mode:"add"});setModalForm({});}}>+ Add Category</button></div>
-                  <div className="tbl"><table><thead><tr><th>Brand</th><th>Category Name</th><th>SKUs</th><th>Actions</th></tr></thead>
-                  <tbody>{catalog.categories.map((cat: Record<string,any>)=>(<tr key={cat.category_id}><td><span className="b bbl">{cat.brand_name}</span></td><td className="td-name">{cat.category_name}</td><td>{catalog.skus.filter(sk=>sk.category_id===cat.category_id).length}</td><td style={{display:"flex",gap:4}}><button className="btn bya btn-sm" onClick={()=>{setShowModal({type:"category",mode:"edit"});setModalForm({category_id:cat.category_id,category_name:cat.category_name,brand_id:cat.brand_id});}}><IcoEdit/> Edit</button><button className="btn brd btn-sm" onClick={()=>{if(confirm(`Delete category "${cat.category_name}"?`))doDelete(`Category ${cat.category_name}`,"delete_category",{category_id:cat.category_id},true);}}><IcoDelete/> Delete</button></td></tr>))}</tbody>
-                  </table></div>
-                </div>
-                <div className="card">
-                  <div className="ch"><div className="ct">SKUs & Prices ({filteredPrices.length})</div>
-                    <div style={{display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
-                      <select value={priceBrand} onChange={e=>setPriceBrand(e.target.value)} style={{...s,width:110}}><option value="all">All Brands</option>{catalog.brands.map(br=><option key={br.brand_id} value={br.brand_name}>{br.brand_name}</option>)}</select>
-                      <div className="sw" style={{width:160}}><span className="si"><IcoSearch/></span><input placeholder="Search SKU..." value={priceSearch} onChange={e=>setPriceSearch(e.target.value)} /></div>
-                      <button className="btn bp" onClick={()=>{setShowModal({type:"sku",mode:"add"});setModalForm({unit_of_measure:"CTN"});}}>+ Add SKU</button>
-                    </div>
+                <div className="card" style={{marginTop:12}}>
+                  <div className="ch">
+                    <div className="ct">Store Pricing</div>
+                    <select value={pricingStore} onChange={e=>{setPricingStore(e.target.value);fetchStorePricing(e.target.value);}} style={{...s,width:180}}>
+                      <option value="">-- Select Store --</option>
+                      {stores.map((st:Record<string,any>)=>(
+                        <option key={st.store_id} value={st.store_id}>{st.store_name}</option>
+                      ))}
+                    </select>
                   </div>
-                  <div className="tbl"><table>
-                    <thead><tr><th>Brand</th><th>Category</th><th>SKU Name</th><th>UOM</th><th>Price (Rs)</th><th>Status</th><th>Actions</th></tr></thead>
-                    <tbody>{filteredPrices.map((p: Record<string,any>)=>(<tr key={p.sku_id}>
-                      <td><span className="b bbl">{p.brand_name}</span></td><td style={{fontSize:11,color:"#64748B"}}>{p.category_name}</td>
-                      <td className="sku-name-cell">{p.sku_name}</td>
-                      <td style={{fontSize:11,color:"#94A3B8"}}>{p.unit_of_measure}</td>
-                      <td>{editPriceId===p.sku_id?<div className="price-edit-wrap"><input type="number" value={editPriceVal} onChange={e=>setEditPriceVal(e.target.value)} className="price-edit-input" autoFocus/><button className="btn bg2 btn-sm" onClick={async()=>{await doAction("/api/auth/admin-catalog","update_price",{sku_id:p.sku_id,retail_price:parseFloat(editPriceVal)});setEditPriceId(null);fetchCatalog();}}>Save</button><button className="btn bgray btn-sm" onClick={()=>setEditPriceId(null)}>Cancel</button></div>:<span style={{fontWeight:600,cursor:"pointer",color:"#1E3A8A",display:"flex",alignItems:"center",gap:4}} onClick={()=>{setEditPriceId(p.sku_id);setEditPriceVal(p.retail_price);}}>Rs {Number(p.retail_price).toLocaleString()} <IcoEdit/></span>}</td>
-                      <td><span className={`b ${p.is_active?"bg":"br"}`}>{p.is_active?"Active":"Inactive"}</span></td>
-                      <td style={{display:"flex",gap:4}}><button className="btn bya btn-sm" onClick={()=>{setShowModal({type:"sku",mode:"edit"});setModalForm({sku_id:p.sku_id,sku_name:p.sku_name,unit_of_measure:p.unit_of_measure,retail_price:p.retail_price,category_id:p.category_id});}}><IcoEdit/></button><button className="btn brd btn-sm" onClick={()=>{if(confirm(`Remove SKU "${p.sku_name}"?`))doDelete(`SKU ${p.sku_name}`,"delete_sku",{sku_id:p.sku_id},true);}}><IcoDelete/></button></td>
-                    </tr>))}</tbody>
-                  </table></div>
+                  {pricingStore && (
+                    <div className="tbl"><table>
+                      <thead><tr><th>Brand</th><th>Category</th><th>SKU</th><th>MRP Inc GST</th><th>% to MRP</th><th>Trade Price</th><th>% to Trade</th><th>Invoice Price</th><th>Action</th></tr></thead>
+                      <tbody>
+                        {catalog.skus.map((sk:Record<string,any>)=>{
+                          const form = spForm[sk.sku_id] || {};
+                          const p1       = parseFloat(form.pct_to_mrp||"0")/100;
+                          const p2       = parseFloat(form.pct_to_trade||"0")/100;
+                          // const mrp      = parseFloat(form.mrp_inc_gst||sk.retail_price||"0");
+                          const mrp      = parseFloat(sk.retail_price||"0");
+                          const mrpExc   = mrp * 100 / 118;
+                          const gst      = mrp * 18 / 118;
+                          const tradeExc = mrpExc - (mrpExc * p1);
+                          const trade    = tradeExc + gst;
+                          const invExc   = tradeExc - (tradeExc * p2);
+                          const invoice  = invExc + gst;
+                          const hasAll   = form.pct_to_mrp && form.pct_to_trade;
+                          // const hasAll   = form.mrp_inc_gst && form.pct_to_mrp && form.pct_to_trade;
+                          // const p1     = parseFloat(form.pct_to_mrp||"0")/100;
+                          // const p2     = parseFloat(form.pct_to_trade||"0")/100;
+                          // const mrp    = parseFloat(form.mrp_inc_gst||sk.retail_price||"0");
+                          // const trade   = mrp - (mrp * p1);
+                          // const invoice = trade - (trade * p2);
+                          // const hasAll  = form.mrp_inc_gst && form.pct_to_mrp && form.pct_to_trade;
+                          return (
+                            <tr key={sk.sku_id}>
+                              <td><span className="b bbl">{sk.brand_name}</span></td>
+                              <td style={{fontSize:11,color:"#64748B"}}>{sk.category_name}</td>
+                              <td className="td-name">{sk.sku_name}</td>
+                              {/* <td><input type="number" value={form.mrp_inc_gst||""} placeholder={sk.retail_price} onChange={e=>setSpForm(prev=>({...prev,[sk.sku_id]:{...prev[sk.sku_id],mrp_inc_gst:e.target.value}}))} style={{width:80,padding:"3px 6px",border:"1px solid #E2E8F0",borderRadius:6,fontSize:12}}/></td>
+                              //  */}
+                              <td style={{fontWeight:600,color:"#0F172A",fontSize:12}}>Rs {parseFloat(sk.retail_price||"0").toLocaleString()}</td>
+                              <td><div style={{display:"flex",alignItems:"center",gap:4}}><input type="number" value={form.pct_to_mrp||""} placeholder="e.g. 16.51" onChange={e=>setSpForm(prev=>({...prev,[sk.sku_id]:{...prev[sk.sku_id],pct_to_mrp:e.target.value}}))} style={{width:75,padding:"3px 6px",border:"1px solid #E2E8F0",borderRadius:6,fontSize:12}}/><span style={{fontSize:10,color:"#94A3B8"}}>%</span></div></td>
+                              {/* <td style={{fontWeight:600,color:"#1E3A8A",fontSize:12}}>{form.pct_to_mrp&&form.mrp_inc_gst?`Rs ${trade.toFixed(2)}`:"—"}</td>
+                               */}
+                               <td style={{fontWeight:600,color:"#1E3A8A",fontSize:12}}>{form.pct_to_mrp?`Rs ${trade.toFixed(2)}`:"—"}</td>
+                              <td><div style={{display:"flex",alignItems:"center",gap:4}}><input type="number" value={form.pct_to_trade||""} placeholder="e.g. 16.51" onChange={e=>setSpForm(prev=>({...prev,[sk.sku_id]:{...prev[sk.sku_id],pct_to_trade:e.target.value}}))} style={{width:75,padding:"3px 6px",border:"1px solid #E2E8F0",borderRadius:6,fontSize:12}}/><span style={{fontSize:10,color:"#94A3B8"}}>%</span></div></td>
+                              <td style={{fontWeight:600,color:"#10B981",fontSize:12}}>{hasAll?`Rs ${invoice.toFixed(2)}`:"—"}</td>
+                              <td><button className="btn bp btn-sm" disabled={spSaving===sk.sku_id||!form.pct_to_mrp||!form.mrp_inc_gst||!form.pct_to_trade} onClick={async()=>{
+                                setSpSaving(sk.sku_id);
+                                // await fetch("/api/auth/admin-catalog",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"save_store_pricing",store_id:pricingStore,sku_id:sk.sku_id,pct_to_mrp:form.pct_to_mrp,pct_to_trade:form.pct_to_trade,mrp_inc_gst:form.mrp_inc_gst})});
+                                 await fetch("/api/auth/admin-catalog",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"save_store_pricing",store_id:pricingStore,sku_id:sk.sku_id,pct_to_mrp:form.pct_to_mrp,pct_to_trade:form.pct_to_trade})});
+                                showToast("Pricing saved!");
+                                fetchStorePricing(pricingStore);
+                                setSpSaving(null);
+                              }}>{spSaving===sk.sku_id?"...":"Save"}</button></td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table></div>
+                  )}
+                  {!pricingStore && <div className="empty">Select a store to manage pricing</div>}
                 </div>
               </>
             )}
@@ -1107,14 +1228,14 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <div className="fl"><label className="fl-label">To</label><input type="date" value={attDateTo} onChange={e=>setAttDateTo(e.target.value)}/></div>
                   <div className="fl"><label className="fl-label">Role</label>
                     <select value={attRole} onChange={e=>setAttRole(e.target.value)}>
-                      <option value="all">All Roles</option><option value="Brand Ambassador">BA Only</option><option value="TSE">TSE Only</option><option value="Area Manager">AM Only</option>
+                      <option value="all">All Roles</option><option value="Brand Ambassador">BA Only</option><option value="TSC">TSC Only</option><option value="Area Manager">AM Only</option>
                     </select>
                   </div>
                   <div className="fl"><label className="fl-label">Employee</label>
                     <select value={attEmp} onChange={e=>setAttEmp(e.target.value)}>
                       <option key="all" value="all">All Employees</option>
                       <option key="grp-ba" value="grp:Brand Ambassador">— All BA</option>
-                      <option key="grp-tse" value="grp:TSE">— All TSE/TSO</option>
+                      <option key="grp-tsc" value="grp:TSC">— All TSC</option>
                       <option key="grp-am" value="grp:Area Manager">— All AM</option>
                       {employees.map(e=><option key={`emp-${e.employee_id}`} value={e.employee_id}>{e.full_name}</option>)}
                     </select>
@@ -1132,12 +1253,12 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <span className="dl-label">Download:</span>
                   <button className="btn bg2 btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo,employee_id:attEmp.startsWith("grp:")?"all":attEmp,role_filter:attEmp.startsWith("grp:")?attEmp.replace("grp:",""):attRole,store_id:attStore})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> Filtered</button>
                   <button className="btn bp btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> All</button>
-                  {(["Brand Ambassador","TSE","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSE"}</button>))}
+                  {(["Brand Ambassador","TSC","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('attendance_download',{date_from:attDateFrom,date_to:attDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSC"}</button>))}
                 </div>
                 <div className="card">
                   <div className="ch"><div className="ct">Attendance Records</div><span style={{fontSize:11,color:"#64748B"}}>{filteredAtt.length} records</span></div>
                   <div className="tbl"><table>
-                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>Shift</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th><th>TSE</th><th>AM</th><th>Action</th></tr></thead>
+                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>Shift</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th><th>TSC</th><th>AM</th><th>Action</th></tr></thead>
                     <tbody>
                       {loading?<tr><td colSpan={13} className="empty">Loading...</td></tr>
                       :filteredAtt.length===0?<tr><td colSpan={13} className="empty">No records found</td></tr>
@@ -1152,7 +1273,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                           <td className="td-sm">{a.check_out||<span style={{color:"#F59E0B"}}>Active</span>}</td>
                           <td className="td-sm">{a.hours}</td>
                           <td><span className={`b ${a.status==="Present"?"bg":"br"}`}>{a.status}</span></td>
-                          <td className="td-sm">{a.tse_name||"—"}</td>
+                          <td className="td-sm">{a.tsc_name||"—"}</td>
                           <td className="td-sm">{a.am_name||"—"}</td>
                           <td>{a.check_out&&<button className="btn bg2 btn-sm" onClick={()=>reCheckin(a.employee_id_num||0,a.date)}>Re-Check In</button>}</td>
                         </tr>
@@ -1173,7 +1294,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     <select value={saleEmp} onChange={e=>setSaleEmp(e.target.value)}>
                       <option key="all" value="all">All Employees</option>
                       <option key="grp-ba" value="grp:Brand Ambassador">— All BA</option>
-                      <option key="grp-tse" value="grp:TSE/TSO">— All TSE/TSO</option>
+                      <option key="grp-tsc" value="grp:TSC">— All TSC</option>
                       <option key="grp-am" value="grp:Area Manager">— All AM</option>
                       {employees.map(e=><option key={`emp-${e.employee_id}`} value={e.employee_id}>{e.full_name}</option>)}
                     </select>
@@ -1196,7 +1317,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                   <span className="dl-label">Download:</span>
                   <button className="btn bg2 btn-sm" onClick={async()=>{const empId=saleEmp.startsWith("grp:")?"all":saleEmp;const roleF=saleEmp.startsWith("grp:")?saleEmp.replace("grp:",""):"all";await downloadReport("sales_download",{date_from:saleDateFrom,date_to:saleDateTo,employee_id:empId,role_filter:roleF,store_id:saleStore});setTimeout(()=>downloadReport("attendance_download",{date_from:saleDateFrom,date_to:saleDateTo,employee_id:empId,role_filter:roleF,store_id:saleStore}),800);}} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> Sales + Att</button>
                   <button className="btn bp btn-sm" onClick={()=>downloadReport("sales_download",{date_from:saleDateFrom,date_to:saleDateTo})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> All Sales</button>
-                  {(["Brand Ambassador","TSE","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('sales_download',{date_from:saleDateFrom,date_to:saleDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSE"}</button>))}
+                  {(["Brand Ambassador","TSC","Area Manager"] as string[]).map(r=>(<button key={r} className="btn bgray btn-sm" onClick={()=>downloadReport('sales_download',{date_from:saleDateFrom,date_to:saleDateTo,role_filter:r})} style={{display:"flex",alignItems:"center",gap:4}}><IcoCsv/> {r==="Brand Ambassador"?"All BA":r==="Area Manager"?"All AM":"All TSC"}</button>))}
                 </div>
                 <div className="card">
                   <div className="ch">
@@ -1206,7 +1327,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                     </span>
                   </div>
                   <div className="tbl"><table>
-                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>SKUs</th><th>TSE</th><th>AM</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
+                    <thead><tr><th>Date</th><th>Name</th><th>Code</th><th>Role</th><th>Store</th><th>SKUs</th><th>TSC</th><th>AM</th><th style={{textAlign:"right"}}>Total Sales</th></tr></thead>
                     <tbody>
                       {loading?<tr><td colSpan={9} className="empty">Loading...</td></tr>
                       :filteredSales.length===0?<tr><td colSpan={9} className="empty">No records found</td></tr>
@@ -1222,12 +1343,64 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
                             <td><span className="b bgr b-xs" >{summary.role_name}</span></td>
                             <td className="td-sm">{summary.store_name}</td>
                             <td className="tr-center"><span className="b bbl" style={{fontSize:10}}>{skuCount} SKU{skuCount!==1?"s":""}</span></td>
-                            <td className="td-sm">{summary.tse_name||"—"}</td>
+                            <td className="td-sm">{summary.tsc_name||"—"}</td>
                             <td className="td-sm">{summary.am_name||"—"}</td>
                             <td className="tr-right td-green">Rs {total.toLocaleString()}</td>
                           </tr>
                         );
                       })})()}
+                    </tbody>
+                  </table></div>
+                </div>
+              </>
+            )}
+
+            {/* AGREEMENTS */}
+            {tab==="agreements"&&(
+              <>
+                <div className="section-title">Employee Agreements</div>
+                <div className="dl-row">
+                  <span className="dl-label">Download All:</span>
+                  <button className="btn bg2 btn-sm" style={{display:"flex",alignItems:"center",gap:4}} onClick={()=>{
+                    if(!agreements.length){showToast("No agreements to download",true);return;}
+                    const TERMS = ["Salaries and incentives will be deposited only into the designated bank account.","Duty hours must be followed.","Prior approval is required for leave. Two days of leave will be allowed after two months of regular service with us.","In case of misconduct, false reporting, incorrect information, unapproved leave, or bad behavior, your services will be terminated immediately, and no benefits whatsoever will be provided.","Less than 15 days of work does not qualify for salary or incentives.","One month's notice is mandatory to resign from your role.","The company has the right to terminate your services at any time without prior notice; however, your salary and benefits will be paid up to your final day of work.","You will not take any legal action or file a police report against the company.","You are not entitled to any medical compensation for any accident.","Failure to achieve the assigned target may result in salary reductions and/or delayed payments.","You will not be involved in any financial transactions with the store or collect a salary from the store."];
+                    const rows = agreements.map((a,i) => `${i+1},${a.full_name},${a.employee_code},${a.role_name},${a.phone||""},${a.terms_accepted_at?new Date(a.terms_accepted_at).toLocaleDateString("en-PK"):"Not Accepted"}`);
+                    const csv = ["#,Name,Code,Role,Phone,Accepted On",...rows].join("\n");
+                    const el = document.createElement("a"); el.href = URL.createObjectURL(new Blob([csv],{type:"text/csv"})); el.download="agreements.csv"; el.click();
+                  }}><IcoCsv/> CSV</button>
+                </div>
+                <div className="card">
+                  <div className="ch">
+                    <div className="ct">All Employee Agreements ({agreements.length})</div>
+                    <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                      <span className="b bg">{agreements.filter(a=>a.terms_accepted_at).length} Accepted</span>
+                      <span className="b br">{agreements.filter(a=>!a.terms_accepted_at).length} Pending</span>
+                    </div>
+                  </div>
+                  <div className="tbl"><table>
+                    <thead><tr><th>#</th><th>Name</th><th>Code</th><th>Role</th><th>Phone</th><th>Status</th><th>Accepted On</th><th>Download</th></tr></thead>
+                    <tbody>
+                      {loading?<tr><td colSpan={8} className="empty">Loading...</td></tr>
+                      :agreements.length===0?<tr><td colSpan={8} className="empty">No employees found</td></tr>
+                      :agreements.map((a,i)=>(
+                        <tr key={i}>
+                          <td className="td-muted">{i+1}</td>
+                          <td className="td-name">{a.full_name}</td>
+                          <td className="td-muted">{a.employee_code}</td>
+                          <td><span className="b bgr">{a.role_name}</span></td>
+                          <td className="td-sm">{a.phone||"—"}</td>
+                          <td>{a.terms_accepted_at?<span className="b bg">Accepted</span>:<span className="b br">Pending</span>}</td>
+                          <td className="td-sm">{a.terms_accepted_at?new Date(a.terms_accepted_at).toLocaleDateString("en-PK",{day:"2-digit",month:"short",year:"numeric"}):"—"}</td>
+                          <td>{a.terms_accepted_at&&(
+                            <button className="btn bp btn-sm" style={{display:"flex",alignItems:"center",gap:4}} onClick={()=>{
+                              const TERMS = ["Salaries and incentives will be deposited only into the designated bank account.","Duty hours must be followed.","Prior approval is required for leave. Two days of leave will be allowed after two months of regular service with us.","In case of misconduct, false reporting, incorrect information, unapproved leave, or bad behavior, your services will be terminated immediately, and no benefits whatsoever will be provided.","Less than 15 days of work does not qualify for salary or incentives.","One month's notice is mandatory to resign from your role.","The company has the right to terminate your services at any time without prior notice; however, your salary and benefits will be paid up to your final day of work.","You will not take any legal action or file a police report against the company.","You are not entitled to any medical compensation for any accident.","Failure to achieve the assigned target may result in salary reductions and/or delayed payments.","You will not be involved in any financial transactions with the store or collect a salary from the store."];
+                              const acceptedDate = new Date(a.terms_accepted_at).toLocaleDateString("en-PK",{day:"2-digit",month:"long",year:"numeric"});
+                              const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Agreement - ${a.full_name}</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;padding:0 20px;color:#0d1b26}h1{font-size:22px;color:#0d4567;margin-bottom:4px}h2{font-size:14px;color:#64748B;font-weight:400;margin-bottom:24px}hr{border:none;border-top:2px solid #E2E8F0;margin:20px 0}.info{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#F8FAFC;padding:14px;border-radius:8px;margin-bottom:20px}.info-item label{font-size:10px;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:3px}.info-item span{font-weight:700;color:#0d4567;font-size:13px}.terms-title{font-size:13px;font-weight:700;color:#0d4567;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em}.term-item{display:flex;gap:10px;padding:10px 12px;background:#F8FAFC;border-radius:6px;margin-bottom:8px;border-left:3px solid #0d4567}.term-num{font-weight:800;color:#0d4567;font-size:12px;flex-shrink:0;margin-top:1px}.term-text{font-size:12px;color:#334155;line-height:1.6}.declaration{background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:8px;padding:16px;margin-top:20px}.decl-text{font-size:12px;font-style:italic;color:#1E3A8A;margin-bottom:14px}.sig-row{display:flex;justify-content:space-between;margin-top:8px}.sig-item label{font-size:10px;color:#94A3B8;text-transform:uppercase;display:block;margin-bottom:4px}.sig-item span{font-family:Georgia,serif;font-size:16px;color:#0d4567;border-bottom:1.5px solid #0d4567;padding-bottom:2px;display:block;min-width:160px}@media print{body{margin:20px}}</style></head><body><h1>Terms & Conditions Agreement</h1><h2>Global Marks Pvt Ltd — Employee Agreement</h2><hr/><div class="info"><div class="info-item"><label>Employee Name</label><span>${a.full_name}</span></div><div class="info-item"><label>Employee Code</label><span>${a.employee_code}</span></div><div class="info-item"><label>Role</label><span>${a.role_name}</span></div><div class="info-item"><label>Phone</label><span>${a.phone||"—"}</span></div></div><div class="terms-title">Terms & Conditions</div>${TERMS.map((t,i)=>`<div class="term-item"><div class="term-num">${i+1}</div><div class="term-text">${t}</div></div>`).join("")}<div class="declaration"><p class="decl-text">"I hereby declare that I have read and understood all the above terms and conditions and will follow them in true letter and spirit."</p><div class="sig-row"><div class="sig-item"><label>Signature</label><span>${a.full_name}</span></div><div class="sig-item" style="text-align:right"><label>Date</label><span>${acceptedDate}</span></div></div></div></body></html>`;
+                              const w = window.open("","_blank"); if(w){w.document.write(html);w.document.close();w.onload=()=>w.print();}
+                            }}><IcoCsv/> Print</button>
+                          )}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table></div>
                 </div>
@@ -1244,7 +1417,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <div className="section-sep">Basic Information</div>
               <div className="fgr" style={{marginBottom:10}}>
                 <div className="fg"><label>Full Name *</label><input style={inp} value={addForm.full_name} onChange={e=>setAddForm({...addForm,full_name:e.target.value})} placeholder="Full name"/></div>
-                <div className="fg"><label>Role *</label><select style={s} value={addForm.role_id} onChange={e=>setAddForm({...addForm,role_id:e.target.value})}><option value="4">Brand Ambassador</option><option value="3">TSE</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
+                <div className="fg"><label>Role *</label><select style={s} value={addForm.role_id} onChange={e=>setAddForm({...addForm,role_id:e.target.value})}><option value="4">Brand Ambassador</option><option value="3">TSC</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
                 <div className="fg"><label>Phone *</label><input style={inp} value={addForm.phone} onChange={e=>setAddForm({...addForm,phone:e.target.value.replace(/\D/g,"").slice(0,11)})} placeholder="03001234567" maxLength={11}/></div>
                 <div className="fg"><label>Email (optional)</label><input style={inp} type="email" value={addForm.email} onChange={e=>setAddForm({...addForm,email:e.target.value})} placeholder="email@example.com"/></div>
                 <div className="fg"><label>Password *</label><input style={inp} type="password" value={addForm.password} onChange={e=>setAddForm({...addForm,password:e.target.value})} placeholder="Min 8 characters"/></div>
@@ -1301,7 +1474,7 @@ setTopPerformers({ topBAs: d.topBAs||[], topTSEs: d.topTSEs||[], topAMs: d.topAM
               <div className="fgr">
                 <div className="fg" style={{gridColumn:"span 2"}}><label>Full Name *</label><input style={inp} value={String(showEditEmp.full_name||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,full_name:e.target.value}:p)}/></div>
                 <div className="fg"><label>Phone *</label><input style={inp} value={String(showEditEmp.phone||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,phone:e.target.value.replace(/\D/g,"").slice(0,11)}:p)} placeholder="03001234567" maxLength={11}/></div>
-                <div className="fg"><label className="fl-label">Role</label><select style={s} value={String(showEditEmp.role_id||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,role_id:e.target.value}:p)}><option value="4">Brand Ambassador</option><option value="3">TSE</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
+                <div className="fg"><label className="fl-label">Role</label><select style={s} value={String(showEditEmp.role_id||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,role_id:e.target.value}:p)}><option value="4">Brand Ambassador</option><option value="3">TSC</option><option value="2">Area Manager</option><option value="1">Admin</option></select></div>
                 <div className="fg" style={{gridColumn:"span 2"}}><label>Email (optional)</label><input style={inp} type="email" value={String(showEditEmp.email||"")} onChange={e=>setShowEditEmp((p: Record<string,any>|null)=>p?{...p,email:e.target.value}:p)} placeholder="email@example.com"/></div>
               </div>
               <div className="modal-footer">

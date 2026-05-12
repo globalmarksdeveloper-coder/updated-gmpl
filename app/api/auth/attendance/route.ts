@@ -45,7 +45,34 @@ export async function GET(request: NextRequest) {
 
     const att    = attRows[0]    || null
     const assign = assignRows[0] || null
+// ── Auto-mark Absent if shift has ended and no attendance record ──
+    if (!att && assign) {
+      try {
+        const { rows: shiftRows } = await query(
+          `SELECT end_time FROM shifts WHERE shift_id = $1`,
+          [assign.shift_id]
+        )
+        if (shiftRows.length > 0) {
+          const shiftEnd = shiftRows[0].end_time as string
+          const [endHour, endMin] = shiftEnd.split(':').map(Number)
+          const now   = new Date()
+          const pkNow = new Date(now.getTime() + 5 * 60 * 60 * 1000)
+          const nowMins = pkNow.getUTCHours() * 60 + pkNow.getUTCMinutes()
+          const endMins = endHour * 60 + endMin
 
+          if (nowMins > endMins) {
+            await query(`
+              INSERT INTO attendance
+                (assignment_id, employee_id, store_id, shift_id, attendance_date, status)
+              VALUES ($1, $2, $3, $4, $5, 'Absent')
+              ON CONFLICT DO NOTHING
+            `, [assign.assignment_id, employeeId, assign.store_id, assign.shift_id, today])
+          }
+        }
+      } catch (_e: unknown) { /* silent */ }
+    }
+    // ─────────────────────────────────────────────────────────────────
+    
     const storeLat = assign?.store_lat ? parseFloat(assign.store_lat) : null
     const storeLng = assign?.store_lng ? parseFloat(assign.store_lng) : null
     const storeAddress = assign?.address || null
@@ -106,6 +133,8 @@ export async function POST(request: NextRequest) {
       [employeeId, today]
     )
     const att = existing[0] || null
+    
+    
 
     if (action === 'checkin') {
       if (att) return NextResponse.json({ message: 'Already checked in today' }, { status: 400 })
